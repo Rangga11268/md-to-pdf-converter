@@ -205,6 +205,11 @@ marked.setOptions({
     breaks: true
 });
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', environment: process.env.VERCEL ? 'vercel' : 'local' });
+});
+
 // API endpoint for converting MD content to PDF buffer
 app.post('/api/convert', async (req, res) => {
     try {
