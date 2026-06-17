@@ -1,34 +1,9 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/convert",
-      "methods": ["POST"],
-      "dest": "server.js"
-    },
-    {
-      "src": "/api/health",
-      "methods": ["GET"],
-      "dest": "server.js"
-    },
-    {
-      "src": "/api/review-cv",
-      "methods": ["POST"],
-      "dest": "server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "public/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     }
   ]
 }
