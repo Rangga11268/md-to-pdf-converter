@@ -2045,3 +2045,64 @@ input[type="range"]::-webkit-slider-thumb:hover {
     margin: 0;
 }
 
+/* Print Styles */
+@media print {
+    /* Hide everything on the page */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* Show only the live preview container and the A4 sheet inside it */
+    #live-preview-container,
+    #live-preview-container *,
+    #a4-sheet,
+    #a4-sheet * {
+        visibility: visible;
+    }
+    
+    /* Position the live preview container at top-left, full width, no margin/padding/shadow */
+    #live-preview-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        display: block !important; /* Force display on print */
+    }
+    
+    /* A4 sheet dimensions and alignment, removing box shadow and borders */
+    #a4-sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm !important; /* Standard A4 Width */
+        min-height: 297mm !important; /* Standard A4 Height */
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: white !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Page break optimizations for PDF rendering */
+    h1, h2, h3, .job-title, .contact-details, .contact-links, .flex-row {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+    
+    p, li {
+        page-break-inside: avoid;
+    }
+
+    /* Standard page layout definition */
+    @page {
+        size: A4;
+        margin: 0;
+    }
+}
+
+

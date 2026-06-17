@@ -290,28 +290,21 @@ app.post('/api/convert', async (req, res) => {
             headingColor
         });
 
-        let browser;
-        
-        // Detect if running in Vercel Serverless environment
         if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-            console.log('Menjalankan Puppeteer di lingkungan Vercel...');
-            const chromium = require('@sparticuz/chromium');
-            browser = await puppeteer.launch({
-                args: chromium.args,
-                defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath(),
-                headless: chromium.headless,
-                ignoreHTTPSErrors: true,
-            });
-        } else {
-            console.log('Menjalankan Puppeteer di lingkungan Lokal (Google Chrome)...');
-            const executablePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-            browser = await puppeteer.launch({
-                executablePath: executablePath,
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            return res.status(500).json({ 
+                error: 'Server-side PDF conversion is disabled on Vercel to maintain high performance. Please use client-side print layout.',
+                fallback: true 
             });
         }
+
+        let browser;
+        console.log('Menjalankan Puppeteer di lingkungan Lokal (Google Chrome)...');
+        const executablePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+        browser = await puppeteer.launch({
+            executablePath: executablePath,
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
         
         const page = await browser.newPage();
         await page.setContent(fullHtml, { waitUntil: 'networkidle0' });

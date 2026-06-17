@@ -551,6 +551,27 @@ Darell Rangga Putra Rachman`;
         }
     }
 
+    async function triggerNativePrint() {
+        await customAlert('Server-side PDF generator tidak aktif di Vercel (Hobby limits). Kami akan mengalihkan Anda ke dialog Cetak Browser (Save as PDF).\n\n💡 TIPS: Centang opsi "Background graphics" di setelan cetak agar warna aksen desain Anda muncul sempurna.');
+        
+        // Switch to preview tab to make sure it's rendered and visible
+        tabEditor.classList.remove('active');
+        tabAiReviewer.classList.remove('active');
+        tabPricing.classList.remove('active');
+        tabPreview.classList.add('active');
+        markdownInput.style.display = 'none';
+        aiReviewerContainer.style.display = 'none';
+        pricingContainer.style.display = 'none';
+        dragZone.style.display = 'none';
+        livePreviewContainer.style.display = 'block';
+        renderLivePreview();
+        
+        // Let the DOM update, then open native print dialog
+        setTimeout(() => {
+            window.print();
+        }, 300);
+    }
+
     // Convert Button trigger
     btnConvert.addEventListener('click', async () => {
         const markdown = markdownInput.value.trim();
@@ -582,8 +603,18 @@ Darell Rangga Putra Rachman`;
             });
 
             if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error || 'Gagal membuat PDF.');
+                let hasFallback = false;
+                try {
+                    const errData = await response.json();
+                    hasFallback = errData.fallback || false;
+                } catch(e) {}
+                
+                if (hasFallback) {
+                    hideLoader();
+                    await triggerNativePrint();
+                    return;
+                }
+                throw new Error('Gagal membuat PDF dari server.');
             }
 
             const blob = await response.blob();
@@ -599,7 +630,8 @@ Darell Rangga Putra Rachman`;
 
         } catch (error) {
             console.error('Error saat konversi:', error);
-            await customAlert(`Gagal mengunduh PDF. Error: ${error.message}`);
+            hideLoader();
+            await triggerNativePrint();
         } finally {
             hideLoader();
             btnConvert.disabled = false;
