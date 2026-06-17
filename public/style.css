@@ -232,6 +232,15 @@ body {
 .tabs-container {
     display: flex;
     gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    padding-bottom: 2px; /* space for shadow */
+    flex-shrink: 0;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 
 .tab-btn {
@@ -239,7 +248,7 @@ body {
     font-size: 12px;
     font-weight: 700;
     height: 42px;
-    padding: 0 16px;
+    padding: 0 14px;
     border: var(--border-width) solid var(--border-color);
     border-radius: 0;
     background: #ffffff;
@@ -252,6 +261,7 @@ body {
     justify-content: center;
     text-transform: uppercase;
     white-space: nowrap; /* Prevent text wrapping inside tab buttons */
+    flex-shrink: 0;
 }
 
 .tab-btn:hover {
@@ -447,18 +457,22 @@ body {
     .tabs-container {
         width: 100%;
         display: flex;
+        overflow-x: auto;
     }
     
     .tab-btn {
         flex: 1;
+        min-width: 80px;
         justify-content: center;
+        font-size: 10px;
+        padding: 0 8px;
     }
     
     .actions {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
     }
     
     .select-template-btn,
@@ -473,13 +487,16 @@ body {
 /* Shrink button styles slightly for ultra-small mobile screens to avoid text overflowing borders */
 @media (max-width: 480px) {
     .btn, .tab-btn, .select-template-btn {
-        font-size: 11px;
-        padding: 0 8px;
+        font-size: 10px;
+        padding: 0 6px;
     }
     .select-template-btn {
         padding-right: 24px;
         background-position: right 6px center;
         background-size: 11px;
+    }
+    .actions {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -774,7 +791,7 @@ textarea:focus {
     background: #ffffff;
     padding: 24px;
     min-height: 420px;
-    max-height: 500px;
+    max-height: 680px;
     overflow-y: auto;
     width: 100%;
     /* Emulate standard preview sheet with default styles overridden by sliders dynamically */
@@ -785,6 +802,7 @@ textarea:focus {
     color: #000000;
     background: #ffffff;
     text-align: justify;
+    font-size: 8.5pt;
 }
 
 .a4-sheet h1 {
@@ -844,6 +862,19 @@ textarea:focus {
     margin-bottom: 2px;
 }
 
+.a4-sheet strong, .a4-sheet b {
+    font-weight: bold !important;
+}
+
+.a4-sheet em, .a4-sheet i {
+    font-style: italic !important;
+}
+
+.a4-sheet a {
+    color: #000000;
+    text-decoration: none;
+}
+
 .a4-sheet h3 + p {
     font-style: italic;
     font-size: 0.95em;
@@ -863,16 +894,18 @@ textarea:focus {
     align-items: baseline;
     margin-top: 5px;
     margin-bottom: 2px;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .a4-sheet .flex-row strong {
     font-size: 1em;
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 .a4-sheet .flex-row em {
     font-size: 1em;
-    font-style: italic;
+    font-style: italic !important;
 }
 
 /* Settings grid */

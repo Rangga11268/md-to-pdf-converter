@@ -501,7 +501,7 @@ Darell Rangga Putra Rachman`;
             return `<p>${text}</p>`;
         };
 
-        const htmlContent = marked.parse(md, { renderer: customRenderer });
+        const htmlContent = marked.parse(md, { renderer: customRenderer, gfm: true, breaks: false });
         a4Sheet.innerHTML = htmlContent;
 
         // Apply dynamic custom styling directly to A4 Sheet elements
