@@ -12,6 +12,26 @@
 <body>
     <header class="app-header">
         <div class="header-container">
+            <!-- Floating Sun & Cloud in Header -->
+            <div class="header-sun">
+                <svg viewBox="0 0 100 100" width="60" height="60">
+                    <line x1="50" y1="12" x2="50" y2="2" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="50" y1="88" x2="50" y2="98" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="12" y1="50" x2="2" y2="50" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="88" y1="50" x2="98" y2="50" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="23" y1="23" x2="16" y2="16" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="77" y1="77" x2="84" y2="84" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="23" y1="77" x2="16" y2="84" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <line x1="77" y1="23" x2="84" y2="16" stroke="#000" stroke-width="4.5" stroke-linecap="round" />
+                    <circle cx="50" cy="50" r="20" fill="#ffde4d" stroke="#000" stroke-width="4.5" />
+                </svg>
+            </div>
+            <div class="header-cloud">
+                <svg viewBox="0 0 120 70" width="70" height="40" fill="#ffffff" stroke="#000000" stroke-width="3">
+                    <path d="M 25,50 a 15,15 0 0,1 0,-25 a 20,20 0 0,1 35,-15 a 20,20 0 0,1 30,15 a 15,15 0 0,1 5,25 z" />
+                </svg>
+            </div>
+
             <div class="logo-container">
                 <div class="logo-wrapper">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
@@ -28,47 +48,47 @@
             <p class="subtitle">Ubah file Markdown Anda menjadi PDF CV atau Surat Lamaran satu halaman secara instan. Tanpa ribet, langsung siap pakai.</p>
         </div>
     </header>
-
-    <main class="app-container">
-        <!-- Editor & Preview Panel -->
-        <section class="panel editor-panel">
-            <div class="panel-header">
-                <div class="tabs-container">
-                    <button id="tab-editor" class="tab-btn active">EDITOR</button>
-                    <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
-                </div>
-                <div class="actions">
-                    <select id="select-template" class="btn btn-secondary select-template-btn">
-                        <option value="" disabled selected>MUAT TEMPLATE</option>
-                        <option value="cv">Template CV</option>
-                        <option value="letter">Template Surat Lamaran</option>
-                    </select>
-                    <button id="btn-clear" class="btn btn-secondary" title="Kosongkan Editor">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                        <span>BERSIHKAN</span>
-                    </button>
-                    <button id="btn-download-md" class="btn btn-secondary" title="Unduh File .md">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        <span>UNDUH .MD</span>
-                    </button>
-                    <label for="file-upload" class="btn btn-primary file-label">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                        </svg>
-                        <span>PILIH FILE .MD</span>
-                        <input type="file" id="file-upload" accept=".md" />
-                    </label>
-                </div>
-            </div>
+ 
+     <main class="app-container">
+         <!-- Editor & Preview Panel -->
+         <section class="panel editor-panel">
+             <div class="panel-header">
+                 <div class="tabs-container">
+                     <button id="tab-editor" class="tab-btn active">EDITOR</button>
+                     <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
+                 </div>
+                 <div class="actions">
+                     <select id="select-template" class="btn btn-secondary select-template-btn">
+                         <option value="" disabled selected>MUAT TEMPLATE</option>
+                         <option value="cv">Template CV</option>
+                         <option value="letter">Template Surat Lamaran</option>
+                     </select>
+                     <button id="btn-clear" class="btn btn-secondary" title="Kosongkan Editor">
+                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                             <polyline points="3 6 5 6 21 6"></polyline>
+                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                         </svg>
+                         <span>BERSIHKAN</span>
+                     </button>
+                     <button id="btn-download-md" class="btn btn-blue" title="Unduh File .md">
+                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                             <polyline points="7 10 12 15 17 10"></polyline>
+                             <line x1="12" y1="15" x2="12" y2="3"></line>
+                         </svg>
+                         <span>UNDUH .MD</span>
+                     </button>
+                     <label for="file-upload" class="btn btn-primary file-label">
+                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                             <polyline points="17 8 12 3 7 8"></polyline>
+                             <line x1="12" y1="3" x2="12" y2="15"></line>
+                         </svg>
+                         <span>PILIH FILE .MD</span>
+                         <input type="file" id="file-upload" accept=".md" />
+                     </label>
+                 </div>
+             </div>
             
             <div class="drag-zone" id="drag-zone">
                 <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drag-icon">

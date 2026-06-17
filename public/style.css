@@ -32,11 +32,13 @@ body {
     line-height: 1.4;
 }
 
-/* Header */
+/* Header with Floating Sun & Cloud */
 .app-header {
     background-color: var(--accent-yellow);
     border-bottom: var(--border-width) solid var(--border-color);
     padding: 30px 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .header-container {
@@ -47,9 +49,46 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 24px;
+    position: relative;
+    z-index: 5;
 }
 
+.header-sun {
+    position: absolute;
+    right: 5%;
+    top: 12px;
+    z-index: 1;
+    animation: spinSun 30s linear infinite, floatSun 5s ease-in-out infinite alternate;
+}
+
+.header-cloud {
+    position: absolute;
+    left: 28%;
+    top: 15px;
+    z-index: 1;
+    animation: floatCloudHeader 7s ease-in-out infinite alternate;
+}
+
+@keyframes spinSun {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes floatSun {
+    0% { top: 12px; }
+    100% { top: 22px; }
+}
+
+@keyframes floatCloudHeader {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(12px, 6px) scale(1.05); }
+}
+
+/* Hide floating header elements on small devices to prevent crowding */
 @media (max-width: 768px) {
+    .header-sun, .header-cloud {
+        display: none;
+    }
     .header-container {
         flex-direction: column;
         align-items: flex-start;
@@ -150,6 +189,21 @@ body {
     box-shadow: 6px 6px 0px var(--border-color);
 }
 
+/* Custom color-blended neobrutalist panel shadows */
+.editor-panel {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-blue);
+}
+.editor-panel:hover {
+    box-shadow: 7px 7px 0px var(--accent-blue);
+}
+
+.settings-panel {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow);
+}
+.settings-panel:hover {
+    box-shadow: 7px 7px 0px var(--accent-yellow);
+}
+
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -205,8 +259,15 @@ body {
     box-shadow: 5px 5px 0px var(--border-color);
 }
 
-.tab-btn.active {
+#tab-editor.active {
     background: var(--accent-yellow);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+#tab-preview.active {
+    background: var(--accent-blue);
+    color: #ffffff;
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0px var(--border-color);
 }
@@ -260,6 +321,26 @@ body {
 .btn-secondary {
     background: #ffffff;
     color: #000000;
+}
+
+.btn-blue {
+    background: var(--accent-blue);
+    color: #ffffff;
+}
+
+.btn-blue .btn-icon {
+    color: #ffffff;
+}
+
+.btn-blue:hover {
+    background: #2563eb;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px var(--accent-yellow); /* Blue button with yellow shadow */
+}
+
+.btn-blue:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--accent-yellow);
 }
 
 /* Custom Styled Select Template Button */
@@ -910,7 +991,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border-color);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow); /* Blue button with yellow shadow */
     transition: all 0.1s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -918,13 +999,13 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .btn-convert:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 8px 8px 0px var(--border-color);
+    box-shadow: 8px 8px 0px var(--accent-yellow);
     background: #2563eb;
 }
 
 .btn-convert:active {
     transform: translate(2px, 2px);
-    box-shadow: 3px 3px 0px var(--border-color);
+    box-shadow: 3px 3px 0px var(--accent-yellow);
 }
 
 .btn-convert .spinner {
