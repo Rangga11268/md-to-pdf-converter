@@ -212,6 +212,9 @@ async function convertMdToPdf(inputPath, outputPath) {
         // Match: **Title** followed by newline/carriage return and *Date*
         // Make sure it doesn't match list items starting with asterisks
         mdContent = mdContent.replace(/\*\*(.*?)\*\*\s*[\r\n]+\*([^*]+)\*(?=\s*[\r\n]|$)/g, (match, title, date) => {
+            if (date.length > 40 || date.toLowerCase().includes('tech stack') || date.toLowerCase().includes('github')) {
+                return match;
+            }
             return `<div class="flex-row"><strong>${title}</strong><em>${date}</em></div>`;
         });
         

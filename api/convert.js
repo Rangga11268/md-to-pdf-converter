@@ -234,6 +234,9 @@ module.exports = async (req, res) => {
 
         console.log('Pre-processing title & date rows...');
         markdown = markdown.replace(/\*\*(.*?)\*\*\s*[\r\n]+\*([^*]+)\*(?=\s*[\r\n]|$)/g, (match, title, date) => {
+            if (date.length > 40 || date.toLowerCase().includes('tech stack') || date.toLowerCase().includes('github')) {
+                return match;
+            }
             return `<div class="flex-row"><strong>${title}</strong><em>${date}</em></div>`;
         });
 
