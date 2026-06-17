@@ -29,6 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiSkippedSectionsList = document.getElementById('ai-skipped-sections-list');
     const btnCopyRewritten = document.getElementById('btn-copy-rewritten');
     
+    // File upload elements for AI Reviewer
+    const aiCvDropzone = document.getElementById('ai-cv-dropzone');
+    const aiCvFileInput = document.getElementById('ai-cv-file-input');
+    const aiCvFileBadge = document.getElementById('ai-cv-file-badge');
+    const aiCvFileName = document.getElementById('ai-cv-file-name');
+    const btnRemoveAiCv = document.getElementById('btn-remove-ai-cv');
+    
+    const aiJdDropzone = document.getElementById('ai-jd-dropzone');
+    const aiJdFileInput = document.getElementById('ai-jd-file-input');
+    const aiJdFileBadge = document.getElementById('ai-jd-file-badge');
+    const aiJdFileName = document.getElementById('ai-jd-file-name');
+    const btnRemoveAiJd = document.getElementById('btn-remove-ai-jd');
+    
+    const btnApplyToEditor = document.getElementById('btn-apply-to-editor');
+    
     // Settings elements
     const settingFont = document.getElementById('setting-font');
     const settingColor = document.getElementById('setting-color');
@@ -566,19 +581,160 @@ Darell Rangga Putra Rachman`;
         }
     });
 
+    // --- AI REVIEWER FILE UPLOAD & ACTIONS STATE ---
+    let uploadedAiCv = { type: '', name: '', data: '' };
+    let uploadedAiJd = { type: '', name: '', data: '' };
+    let completeMarkdownResult = '';
+
+    // Handle CV file selection
+    aiCvDropzone.addEventListener('click', (e) => {
+        if (e.target.id !== 'btn-remove-ai-cv' && !e.target.closest('#btn-remove-ai-cv')) {
+            aiCvFileInput.click();
+        }
+    });
+
+    aiCvFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleAiCvFile(e.target.files[0]);
+        }
+    });
+
+    // Handle CV drag-drop
+    aiCvDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        aiCvDropzone.classList.add('dragover');
+    });
+    aiCvDropzone.addEventListener('dragleave', () => {
+        aiCvDropzone.classList.remove('dragover');
+    });
+    aiCvDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        aiCvDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            handleAiCvFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    function handleAiCvFile(file) {
+        const name = file.name;
+        if (name.endsWith('.pdf')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64 = e.target.result.split(',')[1];
+                uploadedAiCv = { type: 'pdf', name: name, data: base64 };
+                aiCvFileName.textContent = name;
+                aiCvFileBadge.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+        } else if (name.endsWith('.md')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedAiCv = { type: 'text', name: name, data: e.target.result };
+                aiCvFileName.textContent = name;
+                aiCvFileBadge.style.display = 'flex';
+            };
+            reader.readAsText(file);
+        } else {
+            customAlert('Unggah CV hanya mendukung berkas PDF atau Markdown (.md) saja.');
+        }
+    }
+
+    // Remove CV file
+    btnRemoveAiCv.addEventListener('click', (e) => {
+        e.stopPropagation();
+        uploadedAiCv = { type: '', name: '', data: '' };
+        aiCvFileInput.value = '';
+        aiCvFileBadge.style.display = 'none';
+    });
+
+    // Handle JD file selection
+    aiJdDropzone.addEventListener('click', (e) => {
+        if (e.target.id !== 'btn-remove-ai-jd' && !e.target.closest('#btn-remove-ai-jd')) {
+            aiJdFileInput.click();
+        }
+    });
+
+    aiJdFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleAiJdFile(e.target.files[0]);
+        }
+    });
+
+    // Handle JD drag-drop
+    aiJdDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        aiJdDropzone.classList.add('dragover');
+    });
+    aiJdDropzone.addEventListener('dragleave', () => {
+        aiJdDropzone.classList.remove('dragover');
+    });
+    aiJdDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        aiJdDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            handleAiJdFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    function handleAiJdFile(file) {
+        const name = file.name;
+        if (name.endsWith('.pdf')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64 = e.target.result.split(',')[1];
+                uploadedAiJd = { type: 'pdf', name: name, data: base64 };
+                aiJdFileName.textContent = name;
+                aiJdFileBadge.style.display = 'flex';
+                
+                // Clear text input since we uploaded a file
+                jobDescriptionInput.value = '';
+                jobDescriptionInput.disabled = true;
+                jobDescriptionInput.placeholder = 'Menggunakan Job Description dari dokumen PDF yang diunggah...';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            customAlert('Unggah Job Description hanya mendukung berkas PDF saja.');
+        }
+    }
+
+    // Remove JD file
+    btnRemoveAiJd.addEventListener('click', (e) => {
+        e.stopPropagation();
+        uploadedAiJd = { type: '', name: '', data: '' };
+        aiJdFileInput.value = '';
+        aiJdFileBadge.style.display = 'none';
+        
+        jobDescriptionInput.disabled = false;
+        jobDescriptionInput.placeholder = 'Atau ketik/tempel persyaratan kerja, tanggung jawab, dan kualifikasi lowongan pekerjaan di sini...';
+    });
+
     // AI CV Reviewer Action
     btnReviewCv.addEventListener('click', async () => {
-        const cvText = markdownInput.value.trim();
-        const jobDescText = jobDescriptionInput.value.trim();
+        let cvPayload = null;
+        let jdPayload = null;
 
-        if (!cvText) {
-            await customAlert('Silakan isi atau unggah CV Anda di Editor terlebih dahulu sebelum melakukan analisis.');
-            return;
+        // 1. Prepare CV Payload
+        if (uploadedAiCv.data) {
+            cvPayload = { type: uploadedAiCv.type, data: uploadedAiCv.data };
+        } else {
+            const cvText = markdownInput.value.trim();
+            if (!cvText) {
+                await customAlert('Silakan isi CV Anda di Editor terlebih dahulu atau unggah file CV (PDF/MD) di atas.');
+                return;
+            }
+            cvPayload = { type: 'text', data: cvText };
         }
 
-        if (!jobDescText) {
-            await customAlert('Silakan isi Deskripsi Pekerjaan (Job Description) target lowongan terlebih dahulu.');
-            return;
+        // 2. Prepare JD Payload
+        if (uploadedAiJd.data) {
+            jdPayload = { type: 'pdf', data: uploadedAiJd.data };
+        } else {
+            const jobDescText = jobDescriptionInput.value.trim();
+            if (!jobDescText) {
+                await customAlert('Silakan unggah dokumen PDF Job Description atau ketik/tempel detail lowongan pekerjaan.');
+                return;
+            }
+            jdPayload = { type: 'text', data: jobDescText };
         }
 
         btnReviewCv.disabled = true;
@@ -592,8 +748,8 @@ Darell Rangga Putra Rachman`;
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    markdown: cvText,
-                    jobDescription: jobDescText
+                    cv: cvPayload,
+                    jobDescription: jdPayload
                 })
             });
 
@@ -603,6 +759,9 @@ Darell Rangga Putra Rachman`;
             }
 
             const data = await response.json();
+
+            // Store optimized markdown result
+            completeMarkdownResult = data.completeMarkdown || '';
 
             // Populate ATS Match Score
             const score = typeof data.matchScore === 'number' ? data.matchScore : parseInt(data.matchScore) || 0;
@@ -755,6 +914,38 @@ Darell Rangga Putra Rachman`;
                 await customAlert('Gagal menyalin teks secara otomatis. Silakan salin secara manual dari area teks.');
             }
             document.body.removeChild(textarea);
+        }
+    });
+
+    // Apply Complete Markdown Result back to editor and redirect to Live Preview
+    btnApplyToEditor.addEventListener('click', async () => {
+        if (!completeMarkdownResult) {
+            await customAlert('Tidak ada CV hasil optimasi AI untuk diterapkan. Silakan lakukan analisis terlebih dahulu!');
+            return;
+        }
+
+        const confirmed = await customConfirm('Terapkan CV Markdown hasil optimasi AI ke Editor utama? Konten Editor Anda saat ini akan digantikan.');
+        if (confirmed) {
+            markdownInput.value = completeMarkdownResult;
+            localStorage.setItem('md2cv_draft', completeMarkdownResult);
+            
+            // Clear current filename if any since CV is newly optimized
+            currentFilename = '';
+            uploadedFilename.style.display = 'none';
+            uploadedFilename.textContent = '';
+            
+            runATSChecklist();
+            renderLivePreview();
+
+            // Auto-redirect to Live Preview tab
+            tabEditor.classList.remove('active');
+            tabAiReviewer.classList.remove('active');
+            tabPreview.classList.add('active');
+            markdownInput.style.display = 'none';
+            aiReviewerContainer.style.display = 'none';
+            livePreviewContainer.style.display = 'block';
+            
+            await customAlert('CV hasil optimasi AI berhasil diterapkan ke Editor utama! Pratinjau dokumen PDF baru Anda sekarang aktif.');
         }
     });
 

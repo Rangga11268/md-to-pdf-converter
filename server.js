@@ -298,10 +298,29 @@ app.post('/api/convert', async (req, res) => {
 // API endpoint for analyzing CV against a Job Description using Gemini
 app.post('/api/review-cv', async (req, res) => {
     try {
-        const { markdown, jobDescription } = req.body;
+        let cvType = 'text';
+        let cvData = '';
+        let jdType = 'text';
+        let jdData = '';
 
-        if (!markdown || !jobDescription) {
-            return res.status(400).json({ error: 'CV Markdown dan Job Description wajib diisi.' });
+        if (req.body.cv && typeof req.body.cv === 'object') {
+            cvType = req.body.cv.type || 'text';
+            cvData = req.body.cv.data || '';
+        } else if (req.body.markdown) {
+            cvType = 'text';
+            cvData = req.body.markdown;
+        }
+
+        if (req.body.jobDescription && typeof req.body.jobDescription === 'object') {
+            jdType = req.body.jobDescription.type || 'text';
+            jdData = req.body.jobDescription.data || '';
+        } else if (typeof req.body.jobDescription === 'string') {
+            jdType = 'text';
+            jdData = req.body.jobDescription;
+        }
+
+        if (!cvData || !jdData) {
+            return res.status(400).json({ error: 'CV dan Job Description wajib diisi.' });
         }
 
         console.log('Menerima permintaan review CV...');
@@ -334,7 +353,7 @@ app.post('/api/review-cv', async (req, res) => {
 * **[Ubuntu Server & Nginx Management]** Mengonfigurasi dan mengamankan 5 instans Ubuntu Server menggunakan Nginx reverse proxy, menghemat biaya operasional server sebesar 15% melalui optimalisasi alokasi resource.
 * **[Server Infrastructure Security]** Menerapkan standar pengerasan keamanan server meliputi SSH key-only authentication dan aturan firewall UFW yang menurunkan percobaan akses ilegal sebesar 95%.
 * **[Database Administration & Backups]** Merancang skema basis data relasional (MySQL & PostgreSQL) dengan normalisasi tingkat ketiga dan mengotomatiskan routine backups yang menjamin pemulihan data 100% saat terjadi insiden.
-* **[Docker Deployment & CLI]** Melakukan kontainerisasi aplikasi menggunakan Docker CLI yang mempercepat siklus deployment dari 40 menit menjadi 3 menit saja.
+* **[Docker Deployment & CLI]** Melakukan kontainerisasi aplikasi menggunakan Docker CLI yang mempercepat siklus deployment dari 40 menit menjadi 3 minute saja.
 * **[Troubleshooting & Monitoring]** Menganalisis log sistem secara berkala untuk troubleshooting downtime, meningkatkan ketersediaan layanan (*system availability*) hingga mencapai target 99.9%.`,
                 skippedSections: [
                     {
@@ -347,7 +366,76 @@ app.post('/api/review-cv', async (req, res) => {
                         reason: "Hanya mencantumkan satu sertifikat basis data umum tanpa rincian keahlian server sistem yang ditekankan jobdesc.",
                         suggestion: "### SERTIFIKASI & PENCAPAIAN\n* **Sertifikat Kompetensi Sistem Basis Data** — Dikeluarkan oleh KOMUNITAS PHPID (Juli 2025)\n* **Linux System Administration Projects** — Berhasil mengelola & memantau server mandiri berbasis Ubuntu dengan sertifikat SSL otomatis Let's Encrypt."
                     }
-                ]
+                ],
+                completeMarkdown: `# DARELL RANGGA PUTRA RACHMAN
+**SYSTEM ADMINISTRATOR & FULLSTACK DEVELOPER**
+
+Bekasi, Jawa Barat, Indonesia | darrelrangga@gmail.com | +62 8978638973
+darellrangga.me | linkedin.com/in/darell-rangga-1320b634b/ | github.com/Rangga11268
+
+---
+
+## PROFIL PROFESIONAL
+Fullstack Developer & SysAdmin dengan 1.5+ tahun pengalaman mengelola infrastruktur Ubuntu Server (Nginx, SSH, UFW) dan membangun web app (React JS, Laravel). Mahir melakukan kontainerisasi Docker untuk memangkas waktu deployment sebesar 90% serta menjamin stabilitas sistem (99.9% uptime).
+
+---
+
+## KUALIFIKASI TEKNIS
+* **Fullstack Web Development:** HTML5, CSS3, JavaScript (ES6+), React JS, Vue.js, PHP (Laravel Framework), Node.js (Express.js), RESTful APIs.
+* **Linux & System Administration:** Ubuntu Server management, Nginx configuration & optimization, Apache, CLI Shell Scripting.
+* **Server Security:** Secure Shell (SSH hardening), Uncomplicated Firewall (UFW), SSL/TLS Certificates (Let's Encrypt).
+* **Database Administration:** MySQL, PostgreSQL, MongoDB, normalisasi skema, indexing kueri, routine backups, transaction logs.
+* **DevOps & Tools:** Docker containerization, Git, GitHub, GitLab, Postman, CLI deployment.
+* **Soft Skills:** Analisis Troubleshooting, Logika Pemecahan Masalah, Kerja Sama Tim, Kemampuan Kerja Remote.
+
+---
+
+## PENGALAMAN KERJA
+
+**Fullstack Developer & System Administrator | Contract / Independent**  
+*Des 2024 – Sekarang*
+* **[Fullstack Application Development]** Mengembangkan dan memelihara 3 aplikasi web modular berbasis React JS dan PHP Laravel, meningkatkan kecepatan respon API sebesar 30% dengan melakukan optimalisasi struktur basis data.
+* **[Ubuntu Server & Nginx Management]** Mengonfigurasi dan mengamankan 5 instans Ubuntu Server menggunakan Nginx reverse proxy, menghemat biaya operasional server sebesar 15% melalui optimalisasi alokasi resource.
+* **[Server Infrastructure Security]** Menerapkan standar pengerasan keamanan server meliputi SSH key-only authentication dan aturan firewall UFW yang menurunkan percobaan akses ilegal sebesar 95%.
+* **[Database Administration & Backups]** Merancang skema basis data relasional (MySQL & PostgreSQL) dengan normalisasi tingkat ketiga dan mengotomatiskan routine backups yang menjamin pemulihan data 100% saat terjadi insiden.
+* **[Docker Deployment & CLI]** Melakukan kontainerisasi aplikasi menggunakan Docker CLI yang mempercepat siklus deployment dari 40 menit menjadi 3 menit saja.
+* **[Troubleshooting & Monitoring]** Menganalisis log sistem secara berkala untuk troubleshooting downtime, meningkatkan ketersediaan layanan (*system availability*) hingga mencapai target 99.9%.
+
+---
+
+## PROYEK PENGEMBANGAN APLIKASI & PORTFOLIO
+
+### RestoApp | SaaS Restaurant Management Platform
+*Tech Stack: Laravel 12 (PHP), React JS, Tailwind CSS, PostgreSQL/MySQL, Docker, Nginx, Ubuntu Server*  
+**GitHub Repository:** github.com/Rangga11268/RestoApp
+* Mengembangkan modul RESTful API backend dan dashboard administratif multi-tenant responsif berbasis React JS.
+* Melakukan deployment kontainer aplikasi menggunakan Docker di atas instans Ubuntu Server dengan konfigurasi Nginx reverse proxy yang dioptimalkan.
+* Menulis 63 unit test fungsional terautomasi menggunakan PHPUnit untuk menjamin keandalan data transaksi.
+
+### SRB Motor V3 | Dealership Management System & Dashboard
+*Tech Stack: Laravel 12, MySQL, REST API, Tailwind CSS, Docker, Nginx, Ubuntu*  
+**GitHub Repository:** github.com/Rangga11268/SrbMotorV3
+* Mengembangkan modul sistem stok dan penanganan pengajuan kredit dealer terintegrasi REST API.
+* Mengonfigurasi server Ubuntu lokal/cloud, penanganan sertifikat SSL, penyiapan cron jobs untuk routine backups otomatis database MySQL.
+
+### Tunggal Jaya Transport | Real-Time Bus Booking System
+*Tech Stack: Laravel 11, Vue.js 3, Inertia.js, MySQL, Fonnte WhatsApp API*  
+**GitHub Repository:** github.com/Rangga11268/TunggalJaya
+* Membangun modul pemesanan tiket bus real-time berbasis basis data relasional MySQL dengan penulisan query teroptimasi untuk log transaksi penjualan.
+
+---
+
+## PENDIDIKAN
+**S1 Sistem Informasi | Universitas Bina Sarana Informatika**  
+*Sep 2024 – Sekarang*  
+* Fokus Studi: Jaringan Komputer, Administrasi Server, Basis Data Relasional.
+* **IPK: 4.00 / 4.00**
+
+---
+
+## SERTIFIKASI & PENCAPAIAN
+* **Sertifikat Kompetensi Sistem Basis Data** — Dikeluarkan oleh KOMUNITAS PHPID (Juli 2025)
+* **Linux System Administration Projects** — Berhasil mengelola & memantau server mandiri berbasis Ubuntu dengan sertifikat SSL otomatis Let's Encrypt.`
             };
 
             return res.json(mockResult);
@@ -358,20 +446,40 @@ app.post('/api/review-cv', async (req, res) => {
         // Using gemini-1.5-flash for fast text generation
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        const prompt = `
+        const parts = [];
+
+        // Build the prompt instructions
+        let promptText = `
 Anda adalah Recruiter Senior dan ATS (Applicant Tracking System) Filter untuk perusahaan target.
 Tugas Anda adalah melakukan audit mendalam terhadap Resume/CV pelamar berdasarkan Deskripsi Pekerjaan (Job Description) yang dilampirkan.
 
-Resume/CV Pelamar (Markdown):
-"""
-${markdown}
-"""
+`;
 
-Deskripsi Pekerjaan (Job Description):
-"""
-${jobDescription}
-"""
+        if (cvType === 'text') {
+            promptText += `Resume/CV Pelamar (Markdown):\n"""\n${cvData}\n"""\n\n`;
+        } else {
+            promptText += `Resume/CV Pelamar dilampirkan sebagai berkas PDF (binary part).\n\n`;
+            parts.push({
+                inlineData: {
+                    data: cvData,
+                    mimeType: "application/pdf"
+                }
+            });
+        }
 
+        if (jdType === 'text') {
+            promptText += `Deskripsi Pekerjaan (Job Description):\n"""\n${jdData}\n"""\n\n`;
+        } else {
+            promptText += `Deskripsi Pekerjaan dilampirkan sebagai berkas PDF (binary part).\n\n`;
+            parts.push({
+                inlineData: {
+                    data: jdData,
+                    mimeType: "application/pdf"
+                }
+            });
+        }
+
+        promptText += `
 Berikan respons Anda dalam format JSON yang valid. Skema JSON harus tepat seperti ini:
 {
   "matchScore": <score_antara_0_dan_100>,
@@ -399,16 +507,21 @@ Berikan respons Anda dalam format JSON yang valid. Skema JSON harus tepat sepert
       "reason": "<alasan_mengapa_dilewati>",
       "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown>"
     }
-  ]
+  ],
+  "completeMarkdown": "<seluruh_isi_CV_yang_baru_yang_telah_dioptimalkan_menggabungkan_bagian_pengalaman_kerja_yang_telah_ditulis_ulang_dan_saran_perbaikan_bagian_yang_dilewati_ke_dalam_layout_CV_utuh_dalam_format_markdown_yang_siap_disalin_dan_diterapkan_langsung_ke_editor_tanpa_kehilangan_informasi_kontak_atau_pendidikan>"
 }
 
 Ketentuan Tambahan:
 - Nilai "rewrittenExperience" harus berisi penulisan ulang bagian Pengalaman Kerja (Experience) dari Resume pelamar dengan menerapkan formula Google XYZ secara ketat (Accomplish X, as measured by Y, by doing Z) dan memasukkan kata kunci penting yang sebelumnya hilang.
 - Nilai "skippedSections" harus menganalisis bagian dari Resume pelamar yang berpotensi dilewati oleh recruiter yang sedang membaca cepat, lalu menyusun kembali tulisan tersebut agar menghentikan scroll pembaca.
+- Nilai "completeMarkdown" harus merupakan versi lengkap dari CV pelamar (baik CV asal berupa teks markdown atau diekstrak dari PDF CV) yang telah diperbarui bagian Pengalaman Kerja-nya dan bagian yang dilewati-nya dengan hasil optimasi di atas. Format harus rapi dan lengkap sebagai resume markdown satu halaman.
 - Pastikan output HANYA berupa JSON valid. Jangan tambahkan kata pengantar, penutup, atau tanda markdown block \`\`\`json ... \`\`\` dalam teks respon.
 `;
 
-        const result = await model.generateContent(prompt);
+        // Add the prompt text to the parts list
+        parts.unshift({ text: promptText });
+
+        const result = await model.generateContent(parts);
         let responseText = result.response.text().trim();
 
         // Strip markdown code block wrappers if present
