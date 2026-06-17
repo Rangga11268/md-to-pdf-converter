@@ -13,9 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabEditor = document.getElementById('tab-editor');
     const tabPreview = document.getElementById('tab-preview');
     const tabAiReviewer = document.getElementById('tab-ai-reviewer');
+    const tabPricing = document.getElementById('tab-pricing');
     const livePreviewContainer = document.getElementById('live-preview-container');
     const aiReviewerContainer = document.getElementById('ai-reviewer-container');
+    const pricingContainer = document.getElementById('pricing-container');
     const a4Sheet = document.getElementById('a4-sheet');
+
+    // Pricing elements
+    const btnBuyTokens = document.getElementById('btn-buy-tokens');
+    const btnBuyUnlimited = document.getElementById('btn-buy-unlimited');
 
     // AI Reviewer Elements
     const jobDescriptionInput = document.getElementById('job-description-input');
@@ -405,18 +411,24 @@ Darell Rangga Putra Rachman`;
     tabEditor.addEventListener('click', () => {
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
+        tabPricing.classList.remove('active');
         tabEditor.classList.add('active');
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
+        pricingContainer.style.display = 'none';
+        dragZone.style.display = 'flex';
         markdownInput.style.display = 'block';
     });
 
     tabPreview.addEventListener('click', () => {
         tabEditor.classList.remove('active');
         tabAiReviewer.classList.remove('active');
+        tabPricing.classList.remove('active');
         tabPreview.classList.add('active');
         markdownInput.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
+        pricingContainer.style.display = 'none';
+        dragZone.style.display = 'none';
         livePreviewContainer.style.display = 'block';
         renderLivePreview();
     });
@@ -424,10 +436,25 @@ Darell Rangga Putra Rachman`;
     tabAiReviewer.addEventListener('click', () => {
         tabEditor.classList.remove('active');
         tabPreview.classList.remove('active');
+        tabPricing.classList.remove('active');
         tabAiReviewer.classList.add('active');
         markdownInput.style.display = 'none';
         livePreviewContainer.style.display = 'none';
+        pricingContainer.style.display = 'none';
+        dragZone.style.display = 'none';
         aiReviewerContainer.style.display = 'block';
+    });
+
+    tabPricing.addEventListener('click', () => {
+        tabEditor.classList.remove('active');
+        tabPreview.classList.remove('active');
+        tabAiReviewer.classList.remove('active');
+        tabPricing.classList.add('active');
+        markdownInput.style.display = 'none';
+        livePreviewContainer.style.display = 'none';
+        aiReviewerContainer.style.display = 'none';
+        dragZone.style.display = 'none';
+        pricingContainer.style.display = 'flex';
     });
 
     // Live Render compilation
@@ -626,16 +653,8 @@ Darell Rangga Putra Rachman`;
                 aiCvFileBadge.style.display = 'flex';
             };
             reader.readAsDataURL(file);
-        } else if (name.endsWith('.md')) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                uploadedAiCv = { type: 'text', name: name, data: e.target.result };
-                aiCvFileName.textContent = name;
-                aiCvFileBadge.style.display = 'flex';
-            };
-            reader.readAsText(file);
         } else {
-            customAlert('Unggah CV hanya mendukung berkas PDF atau Markdown (.md) saja.');
+            customAlert('Unggah CV hanya mendukung berkas PDF saja.');
         }
     }
 
@@ -940,13 +959,24 @@ Darell Rangga Putra Rachman`;
             // Auto-redirect to Live Preview tab
             tabEditor.classList.remove('active');
             tabAiReviewer.classList.remove('active');
+            tabPricing.classList.remove('active');
             tabPreview.classList.add('active');
             markdownInput.style.display = 'none';
             aiReviewerContainer.style.display = 'none';
+            pricingContainer.style.display = 'none';
             livePreviewContainer.style.display = 'block';
             
             await customAlert('CV hasil optimasi AI berhasil diterapkan ke Editor utama! Pratinjau dokumen PDF baru Anda sekarang aktif.');
         }
+    });
+
+    // Pricing plan mockup clicks
+    btnBuyTokens.addEventListener('click', async () => {
+        await customAlert('Fitur Pembayaran Simulasi: Anda akan diarahkan ke gerbang pembayaran Midtrans untuk membeli Paket Kredit AI (5 Kredit) seharga Rp 15.000 via QRIS / Transfer Bank.');
+    });
+
+    btnBuyUnlimited.addEventListener('click', async () => {
+        await customAlert('Fitur Pembayaran Simulasi: Anda akan diarahkan ke gerbang pembayaran Midtrans untuk membeli Paket Akses Penuh 30 Hari seharga Rp 25.000 via QRIS / Transfer Bank.');
     });
 
     // Run initial checklist and preview render
