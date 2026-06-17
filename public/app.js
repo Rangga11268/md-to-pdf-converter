@@ -207,8 +207,8 @@ Darell Rangga Putra Rachman`;
     if (savedDraft !== null) {
         markdownInput.value = savedDraft;
     } else {
-        // Load default template on first run
-        markdownInput.value = cvTemplate;
+        // Start empty on first run
+        markdownInput.value = '';
     }
 
     // Save draft automatically to LocalStorage on typing
