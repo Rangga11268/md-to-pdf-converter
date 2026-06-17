@@ -1,11 +1,49 @@
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
-const { marked } = require('marked');
-const puppeteer = require('puppeteer-core');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+let bootError = null;
 
-const app = express();
+try {
+    require('dotenv').config();
+} catch (e) {
+    bootError = { step: 'dotenv', error: e.message, stack: e.stack };
+}
+
+let express;
+try {
+    express = require('express');
+} catch (e) {
+    if (!bootError) bootError = { step: 'express', error: e.message, stack: e.stack };
+}
+
+let path;
+try {
+    path = require('path');
+} catch (e) {
+    if (!bootError) bootError = { step: 'path', error: e.message, stack: e.stack };
+}
+
+let markedObj;
+let marked;
+try {
+    markedObj = require('marked');
+    marked = markedObj.marked;
+} catch (e) {
+    if (!bootError) bootError = { step: 'marked', error: e.message, stack: e.stack };
+}
+
+let puppeteer;
+try {
+    puppeteer = require('puppeteer-core');
+} catch (e) {
+    if (!bootError) bootError = { step: 'puppeteer-core', error: e.message, stack: e.stack };
+}
+
+let GoogleGenerativeAI;
+try {
+    GoogleGenerativeAI = require('@google/generative-ai').GoogleGenerativeAI;
+} catch (e) {
+    if (!bootError) bootError = { step: 'google-generative-ai', error: e.message, stack: e.stack };
+}
+
+const app = express ? express() : { use: () => {}, get: () => {}, post: () => {} };
 const PORT = process.env.PORT || 3000;
 
 // Body parser with 10mb limit
@@ -207,6 +245,9 @@ marked.setOptions({
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
+    if (bootError) {
+        return res.status(500).json({ status: 'error', error: bootError });
+    }
     res.json({ status: 'ok', environment: process.env.VERCEL ? 'vercel' : 'local' });
 });
 
