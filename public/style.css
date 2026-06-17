@@ -1603,7 +1603,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     margin-bottom: 8px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1100px) {
     .ai-input-row {
         grid-template-columns: 1fr;
     }
@@ -1808,11 +1808,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .pricing-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .pricing-grid {
         grid-template-columns: 1fr;
     }
@@ -1821,7 +1821,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .pricing-card {
     background: #ffffff;
     border: var(--border-width) solid var(--border-color);
-    padding: 24px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -1857,11 +1857,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .pricing-card-header {
     border-bottom: 2px dashed var(--border-color);
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .card-plan-tag {
@@ -1888,7 +1888,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .card-plan-name {
     font-family: 'Syne', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     margin: 0;
     color: var(--text-color);
@@ -1898,21 +1898,23 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: flex;
     align-items: baseline;
     font-family: 'Syne', sans-serif;
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 
 .card-plan-price .currency {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     margin-right: 2px;
 }
 
 .card-plan-price .amount {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 800;
 }
 
 .card-plan-price .period {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #6b7280;
     margin-left: 4px;
@@ -1925,21 +1927,25 @@ input[type="range"]::-webkit-slider-thumb:hover {
     margin: 0 0 24px 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     flex: 1;
 }
 
 .pricing-features li {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--text-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    position: relative;
+    padding-left: 20px;
+    line-height: 1.4;
+    text-align: left;
 }
 
 .pricing-features li::before {
     content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
     font-weight: bold;
     color: #10b981;
 }
