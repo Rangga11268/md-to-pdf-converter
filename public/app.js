@@ -204,7 +204,7 @@ Darell Rangga Putra Rachman`;
 
     // Load draft from LocalStorage if available
     const savedDraft = localStorage.getItem('md2cv_draft');
-    if (savedDraft) {
+    if (savedDraft !== null) {
         markdownInput.value = savedDraft;
     } else {
         // Load default template on first run
@@ -274,7 +274,7 @@ Darell Rangga Putra Rachman`;
         if (confirmed) {
             markdownInput.value = '';
             currentFilename = '';
-            localStorage.removeItem('md2cv_draft');
+            localStorage.setItem('md2cv_draft', ''); // Set to empty string instead of removing to preserve empty state on reload
             uploadedFilename.style.display = 'none';
             uploadedFilename.textContent = '';
             runATSChecklist();
