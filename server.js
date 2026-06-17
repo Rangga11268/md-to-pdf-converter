@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { marked } = require('marked');
 const puppeteer = require('puppeteer-core');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -290,6 +292,143 @@ app.post('/api/convert', async (req, res) => {
     } catch (error) {
         console.error('Error saat konversi server:', error);
         res.status(500).json({ error: error.message || 'Terjadi kesalahan sistem saat membuat PDF.' });
+    }
+});
+
+// API endpoint for analyzing CV against a Job Description using Gemini
+app.post('/api/review-cv', async (req, res) => {
+    try {
+        const { markdown, jobDescription } = req.body;
+
+        if (!markdown || !jobDescription) {
+            return res.status(400).json({ error: 'CV Markdown dan Job Description wajib diisi.' });
+        }
+
+        console.log('Menerima permintaan review CV...');
+
+        // Check if Gemini API key is configured
+        if (!process.env.GEMINI_API_KEY) {
+            console.log('GEMINI_API_KEY tidak disetel. Menggunakan simulasi data mock ATS...');
+            
+            // Wait 1.5 seconds to simulate API lag for a better user loading experience
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Return realistic structured mock data
+            const mockResult = {
+                matchScore: 82,
+                missingKeywords: [
+                    "Nginx Configuration",
+                    "Ubuntu Server Management",
+                    "Server Monitoring (UFW/SSH)",
+                    "RESTful API Integration",
+                    "CI/CD / Docker Orchestration"
+                ],
+                redFlags: [
+                    "Kurang menyertakan rincian metrik pencapaian (data kuantitatif/angka) pada proyek kerja.",
+                    "Status mahasiswa aktif saat ini dapat memicu keraguan perekrut terkait ketersediaan waktu kerja penuh (Full-time).",
+                    "Belum terlihat adanya sertifikasi administrasi sistem server/jaringan yang terstandarisasi industri."
+                ],
+                rewrittenExperience: `### Fullstack Developer & System Administrator | Contract / Independent  
+*Des 2024 – Sekarang*  
+* **[Fullstack Application Development]** Mengembangkan dan memelihara 3 aplikasi web modular berbasis React JS dan PHP Laravel, meningkatkan kecepatan respon API sebesar 30% dengan melakukan optimalisasi struktur basis data.
+* **[Ubuntu Server & Nginx Management]** Mengonfigurasi dan mengamankan 5 instans Ubuntu Server menggunakan Nginx reverse proxy, menghemat biaya operasional server sebesar 15% melalui optimalisasi alokasi resource.
+* **[Server Infrastructure Security]** Menerapkan standar pengerasan keamanan server meliputi SSH key-only authentication dan aturan firewall UFW yang menurunkan percobaan akses ilegal sebesar 95%.
+* **[Database Administration & Backups]** Merancang skema basis data relasional (MySQL & PostgreSQL) dengan normalisasi tingkat ketiga dan mengotomatiskan routine backups yang menjamin pemulihan data 100% saat terjadi insiden.
+* **[Docker Deployment & CLI]** Melakukan kontainerisasi aplikasi menggunakan Docker CLI yang mempercepat siklus deployment dari 40 menit menjadi 3 menit saja.
+* **[Troubleshooting & Monitoring]** Menganalisis log sistem secara berkala untuk troubleshooting downtime, meningkatkan ketersediaan layanan (*system availability*) hingga mencapai target 99.9%.`,
+                skippedSections: [
+                    {
+                        section: "Profil Profesional",
+                        reason: "Terlalu deskriptif, bertele-tele, dan kurang menyajikan keahlian kunci server Linux di 3 baris awal.",
+                        suggestion: "### PROFIL PROFESIONAL\nFullstack Developer & SysAdmin dengan 1.5+ tahun pengalaman mengelola infrastruktur Ubuntu Server (Nginx, SSH, UFW) dan membangun web app (React JS, Laravel). Mahir melakukan kontainerisasi Docker untuk memangkas waktu deployment sebesar 90% serta menjamin stabilitas sistem (99.9% uptime)."
+                    },
+                    {
+                        section: "Sertifikasi & Pencapaian",
+                        reason: "Hanya mencantumkan satu sertifikat basis data umum tanpa rincian keahlian server sistem yang ditekankan jobdesc.",
+                        suggestion: "### SERTIFIKASI & PENCAPAIAN\n* **Sertifikat Kompetensi Sistem Basis Data** — Dikeluarkan oleh KOMUNITAS PHPID (Juli 2025)\n* **Linux System Administration Projects** — Berhasil mengelola & memantau server mandiri berbasis Ubuntu dengan sertifikat SSL otomatis Let's Encrypt."
+                    }
+                ]
+            };
+
+            return res.json(mockResult);
+        }
+
+        console.log('Menghubungi Gemini API...');
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        // Using gemini-1.5-flash for fast text generation
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        const prompt = `
+Anda adalah Recruiter Senior dan ATS (Applicant Tracking System) Filter untuk perusahaan target.
+Tugas Anda adalah melakukan audit mendalam terhadap Resume/CV pelamar berdasarkan Deskripsi Pekerjaan (Job Description) yang dilampirkan.
+
+Resume/CV Pelamar (Markdown):
+"""
+${markdown}
+"""
+
+Deskripsi Pekerjaan (Job Description):
+"""
+${jobDescription}
+"""
+
+Berikan respons Anda dalam format JSON yang valid. Skema JSON harus tepat seperti ini:
+{
+  "matchScore": <score_antara_0_dan_100>,
+  "missingKeywords": [
+    "<kata_kunci_1_yang_hilang>",
+    "<kata_kunci_2_yang_hilang>",
+    "<kata_kunci_3_yang_hilang>",
+    "<kata_kunci_4_yang_hilang>",
+    "<kata_kunci_5_yang_hilang>"
+  ],
+  "redFlags": [
+    "<red_flag_1>",
+    "<red_flag_2>",
+    "<red_flag_3>"
+  ],
+  "rewrittenExperience": "<bagian_pengalaman_kerja_yang_ditulis_ulang_menggunakan_formula_Google_XYZ_Accomplish_X_as_measured_by_Y_by_doing_Z_secara_natural_dalam_format_markdown>",
+  "skippedSections": [
+    {
+      "section": "<nama_bagian_1_yang_rawan_dilewati>",
+      "reason": "<alasan_mengapa_dilewati>",
+      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown>"
+    },
+    {
+      "section": "<nama_bagian_2_yang_rawan_dilewati>",
+      "reason": "<alasan_mengapa_dilewati>",
+      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown>"
+    }
+  ]
+}
+
+Ketentuan Tambahan:
+- Nilai "rewrittenExperience" harus berisi penulisan ulang bagian Pengalaman Kerja (Experience) dari Resume pelamar dengan menerapkan formula Google XYZ secara ketat (Accomplish X, as measured by Y, by doing Z) dan memasukkan kata kunci penting yang sebelumnya hilang.
+- Nilai "skippedSections" harus menganalisis bagian dari Resume pelamar yang berpotensi dilewati oleh recruiter yang sedang membaca cepat, lalu menyusun kembali tulisan tersebut agar menghentikan scroll pembaca.
+- Pastikan output HANYA berupa JSON valid. Jangan tambahkan kata pengantar, penutup, atau tanda markdown block \`\`\`json ... \`\`\` dalam teks respon.
+`;
+
+        const result = await model.generateContent(prompt);
+        let responseText = result.response.text().trim();
+
+        // Strip markdown code block wrappers if present
+        if (responseText.startsWith('```')) {
+            responseText = responseText.replace(/^```(?:json)?/, '').replace(/```$/, '').trim();
+        }
+
+        console.log('Gemini API merespon sukses.');
+        
+        try {
+            const jsonResult = JSON.parse(responseText);
+            res.json(jsonResult);
+        } catch (parseError) {
+            console.error('Gagal memproses parsing JSON dari AI:', responseText);
+            throw new Error('Format respon kecerdasan buatan tidak sesuai format JSON.');
+        }
+
+    } catch (error) {
+        console.error('Error saat review CV server:', error);
+        res.status(500).json({ error: error.message || 'Terjadi kesalahan sistem saat menganalisis CV.' });
     }
 });
 

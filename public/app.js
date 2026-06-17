@@ -12,8 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tabs
     const tabEditor = document.getElementById('tab-editor');
     const tabPreview = document.getElementById('tab-preview');
+    const tabAiReviewer = document.getElementById('tab-ai-reviewer');
     const livePreviewContainer = document.getElementById('live-preview-container');
+    const aiReviewerContainer = document.getElementById('ai-reviewer-container');
     const a4Sheet = document.getElementById('a4-sheet');
+
+    // AI Reviewer Elements
+    const jobDescriptionInput = document.getElementById('job-description-input');
+    const btnReviewCv = document.getElementById('btn-review-cv');
+    const aiResultsDashboard = document.getElementById('ai-results-dashboard');
+    const aiScoreValue = document.getElementById('ai-score-value');
+    const aiScoreComment = document.getElementById('ai-score-comment');
+    const aiKeywordsList = document.getElementById('ai-keywords-list');
+    const aiFlagsList = document.getElementById('ai-flags-list');
+    const aiRewrittenExperience = document.getElementById('ai-rewritten-experience');
+    const aiSkippedSectionsList = document.getElementById('ai-skipped-sections-list');
+    const btnCopyRewritten = document.getElementById('btn-copy-rewritten');
     
     // Settings elements
     const settingFont = document.getElementById('setting-font');
@@ -375,17 +389,30 @@ Darell Rangga Putra Rachman`;
     // Tabs switching logic
     tabEditor.addEventListener('click', () => {
         tabPreview.classList.remove('active');
+        tabAiReviewer.classList.remove('active');
         tabEditor.classList.add('active');
         livePreviewContainer.style.display = 'none';
+        aiReviewerContainer.style.display = 'none';
         markdownInput.style.display = 'block';
     });
 
     tabPreview.addEventListener('click', () => {
         tabEditor.classList.remove('active');
+        tabAiReviewer.classList.remove('active');
         tabPreview.classList.add('active');
         markdownInput.style.display = 'none';
+        aiReviewerContainer.style.display = 'none';
         livePreviewContainer.style.display = 'block';
         renderLivePreview();
+    });
+
+    tabAiReviewer.addEventListener('click', () => {
+        tabEditor.classList.remove('active');
+        tabPreview.classList.remove('active');
+        tabAiReviewer.classList.add('active');
+        markdownInput.style.display = 'none';
+        livePreviewContainer.style.display = 'none';
+        aiReviewerContainer.style.display = 'block';
     });
 
     // Live Render compilation
@@ -536,6 +563,198 @@ Darell Rangga Putra Rachman`;
             btnConvert.disabled = false;
             btnConvert.classList.remove('loading');
             btnConvert.querySelector('.btn-text').textContent = 'Unduh PDF';
+        }
+    });
+
+    // AI CV Reviewer Action
+    btnReviewCv.addEventListener('click', async () => {
+        const cvText = markdownInput.value.trim();
+        const jobDescText = jobDescriptionInput.value.trim();
+
+        if (!cvText) {
+            await customAlert('Silakan isi atau unggah CV Anda di Editor terlebih dahulu sebelum melakukan analisis.');
+            return;
+        }
+
+        if (!jobDescText) {
+            await customAlert('Silakan isi Deskripsi Pekerjaan (Job Description) target lowongan terlebih dahulu.');
+            return;
+        }
+
+        btnReviewCv.disabled = true;
+        btnReviewCv.classList.add('loading');
+        showLoader('Sedang melakukan analisis CV dengan AI. Harap tunggu sebentar...');
+
+        try {
+            const response = await fetch('/api/review-cv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    markdown: cvText,
+                    jobDescription: jobDescText
+                })
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error || 'Gagal melakukan analisis CV.');
+            }
+
+            const data = await response.json();
+
+            // Populate ATS Match Score
+            const score = typeof data.matchScore === 'number' ? data.matchScore : parseInt(data.matchScore) || 0;
+            aiScoreValue.textContent = score;
+
+            let scoreColor = '#ff5f56'; // Red (<50%)
+            let scoreCommentText = 'Sangat Rendah (Banyak Red Flags & keywords yang terlewat)';
+            
+            if (score >= 75) {
+                scoreColor = '#22c55e'; // Green (>75%)
+                scoreCommentText = 'Sangat Tinggi (Kecocokan kuat dengan kualifikasi lowongan!)';
+            } else if (score >= 50) {
+                scoreColor = '#eab308'; // Yellow (50-75%)
+                scoreCommentText = 'Kecocokan Sedang (Bisa ditingkatkan dengan rekomendasi di bawah)';
+            }
+
+            aiScoreValue.style.color = scoreColor;
+            const scoreCircle = document.querySelector('.score-circle');
+            if (scoreCircle) {
+                scoreCircle.style.borderColor = scoreColor;
+                scoreCircle.style.boxShadow = `4px 4px 0 ${scoreColor}`;
+            }
+            aiScoreComment.textContent = scoreCommentText;
+
+            // Populate Missing Keywords
+            aiKeywordsList.innerHTML = '';
+            const keywords = Array.isArray(data.missingKeywords) ? data.missingKeywords : [];
+            if (keywords.length > 0) {
+                keywords.forEach(keyword => {
+                    const li = document.createElement('li');
+                    li.textContent = keyword;
+                    aiKeywordsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'Tidak ada kata kunci penting yang terlewat!';
+                aiKeywordsList.appendChild(li);
+            }
+
+            // Populate Red Flags
+            aiFlagsList.innerHTML = '';
+            const redFlags = Array.isArray(data.redFlags) ? data.redFlags : [];
+            if (redFlags.length > 0) {
+                redFlags.forEach(flag => {
+                    const li = document.createElement('li');
+                    li.textContent = flag;
+                    aiFlagsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'Tidak ditemukan red flags kritis.';
+                aiFlagsList.appendChild(li);
+            }
+
+            // Populate Rewritten Experience
+            aiRewrittenExperience.value = data.rewrittenExperience || '';
+
+            // Populate Skipped Sections
+            aiSkippedSectionsList.innerHTML = '';
+            const skippedSections = Array.isArray(data.skippedSections) ? data.skippedSections : [];
+            if (skippedSections.length > 0) {
+                skippedSections.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'skipped-section-item';
+
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'skipped-section-title';
+                    titleSpan.textContent = item.section || 'Bagian Dokumen';
+
+                    const reasonSpan = document.createElement('span');
+                    reasonSpan.className = 'skipped-section-reason';
+                    reasonSpan.textContent = item.reason || 'Dilewati oleh recruiter/ATS.';
+
+                    const suggestionDiv = document.createElement('div');
+                    suggestionDiv.className = 'skipped-section-suggestion';
+
+                    const suggestionTitle = document.createElement('span');
+                    suggestionTitle.className = 'skipped-section-suggestion-title';
+                    suggestionTitle.textContent = 'Saran Tulis Ulang (Scroll-Stopping):';
+
+                    const suggestionBox = document.createElement('div');
+                    suggestionBox.className = 'skipped-section-suggestion-box';
+                    suggestionBox.textContent = item.suggestion || '';
+
+                    suggestionDiv.appendChild(suggestionTitle);
+                    suggestionDiv.appendChild(suggestionBox);
+
+                    itemDiv.appendChild(titleSpan);
+                    itemDiv.appendChild(reasonSpan);
+                    itemDiv.appendChild(suggestionDiv);
+
+                    aiSkippedSectionsList.appendChild(itemDiv);
+                });
+            } else {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.style.fontStyle = 'italic';
+                emptyMsg.style.fontSize = '12px';
+                emptyMsg.style.color = '#6b7280';
+                emptyMsg.textContent = 'Semua bagian resume Anda menarik dan terstruktur dengan baik!';
+                aiSkippedSectionsList.appendChild(emptyMsg);
+            }
+
+            // Show Dashboard
+            aiResultsDashboard.style.display = 'block';
+
+            // Smooth scroll to the results dashboard
+            setTimeout(() => {
+                aiResultsDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
+            await customAlert('Analisis CV selesai! Laporan audit ATS dan rekomendasi tulis ulang telah ditampilkan di bawah.');
+
+        } catch (error) {
+            console.error('Error saat melakukan review CV:', error);
+            await customAlert(`Gagal melakukan review CV. Error: ${error.message}`);
+        } finally {
+            hideLoader();
+            btnReviewCv.disabled = false;
+            btnReviewCv.classList.remove('loading');
+        }
+    });
+
+    // Copy Rewritten Experience to Clipboard
+    btnCopyRewritten.addEventListener('click', async () => {
+        const textToCopy = aiRewrittenExperience.value.trim();
+        if (!textToCopy) {
+            await customAlert('Tidak ada hasil tulis ulang untuk disalin!');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            await customAlert('Bagian Pengalaman Kerja (Google XYZ) berhasil disalin ke clipboard! Silakan tempelkan kembali ke bagian Pengalaman Kerja Anda di tab EDITOR.');
+        } catch (err) {
+            console.error('Gagal menyalin:', err);
+            // Fallback copy
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            textarea.style.position = 'fixed';
+            textarea.style.top = '0';
+            textarea.style.left = '0';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                await customAlert('Bagian Pengalaman Kerja (Google XYZ) berhasil disalin ke clipboard! Silakan tempelkan kembali ke bagian Pengalaman Kerja Anda di tab EDITOR.');
+            } catch (copyErr) {
+                await customAlert('Gagal menyalin teks secara otomatis. Silakan salin secara manual dari area teks.');
+            }
+            document.body.removeChild(textarea);
         }
     });
 

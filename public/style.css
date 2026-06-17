@@ -272,6 +272,14 @@ body {
     box-shadow: 2px 2px 0px var(--border-color);
 }
 
+#tab-ai-reviewer.active {
+    background: var(--accent-purple);
+    color: #ffffff;
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border-color);
+}
+
+
 .actions {
     display: flex;
     gap: 10px;
@@ -1207,5 +1215,374 @@ input[type="range"]::-webkit-slider-thumb:hover {
     100% {
         transform: translateY(-6px) scale(1.04);
     }
+}
+
+/* AI Reviewer Styling */
+.ai-reviewer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.ai-input-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-color);
+    padding: 20px;
+    box-shadow: 4px 4px 0 var(--border-color);
+}
+
+.ai-input-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+}
+
+#job-description-input {
+    width: 100%;
+    min-height: 150px;
+    max-height: 250px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px;
+    border: var(--border-width) solid var(--border-color);
+    outline: none;
+    line-height: 1.4;
+    transition: box-shadow 0.15s ease;
+}
+
+#job-description-input:focus {
+    box-shadow: 3px 3px 0 var(--border-color);
+}
+
+.btn-review-cv {
+    width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    height: 44px;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: 0;
+    color: #ffffff;
+    background: var(--accent-purple);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 4px 4px 0px var(--accent-yellow); /* Purple button with yellow shadow */
+    transition: all 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-review-cv:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--accent-yellow);
+    background: #9333ea;
+}
+
+.btn-review-cv:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--accent-yellow);
+}
+
+/* AI Results Dashboard Layout */
+.ai-results-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: slideUpFade 0.25s ease-out;
+}
+
+@keyframes slideUpFade {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.ai-results-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.45fr 1.45fr;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .ai-results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ai-result-card,
+.ai-full-card {
+    background: #ffffff;
+    border: var(--border-width) solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border-color);
+}
+
+/* Specific Card Shadows to blend colors */
+.score-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-blue);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 220px;
+}
+
+.keywords-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow);
+}
+
+.flags-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--border-color);
+}
+
+.rewritten-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-purple);
+}
+
+.skipped-card {
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-blue);
+}
+
+/* Card Tags */
+.card-tag {
+    align-self: flex-start;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: var(--accent-blue);
+    color: #ffffff;
+    padding: 4px 10px;
+    border: 2px solid var(--border-color);
+    box-shadow: 2px 2px 0 var(--border-color);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.card-tag.yellow {
+    background: var(--accent-yellow);
+    color: #000000;
+}
+
+.card-tag.red {
+    background: #ff5f56;
+    color: #ffffff;
+}
+
+.card-tag.purple {
+    background: var(--accent-purple);
+    color: #ffffff;
+}
+
+.card-tag.blue {
+    background: var(--accent-blue);
+    color: #ffffff;
+}
+
+/* Score Circle */
+.score-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid var(--border-color);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    box-shadow: 4px 4px 0 var(--border-color);
+    margin: 10px 0;
+    position: relative;
+}
+
+.score-circle .pct {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.score-comment {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* List Stylings */
+.keywords-list,
+.flags-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.keywords-list li {
+    font-size: 11.5px;
+    font-weight: 700;
+    background: #f3f4f6;
+    border: 2px solid var(--border-color);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.keywords-list li::before {
+    content: "⚡";
+    font-size: 11.5px;
+}
+
+.flags-list li {
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding-left: 20px;
+    position: relative;
+}
+
+.flags-list li::before {
+    content: "⚠️";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Rewritten Code Textarea */
+.card-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.card-header-actions .card-tag {
+    margin-bottom: 0;
+}
+
+.btn-copy-rewritten {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 11px !important;
+    background: var(--accent-yellow) !important;
+    box-shadow: 2px 2px 0 var(--border-color) !important;
+}
+
+.btn-copy-rewritten:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 3px 3px 0 var(--border-color) !important;
+}
+
+.card-desc {
+    font-size: 12px;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 14px;
+}
+
+.ai-code-textarea {
+    width: 100%;
+    min-height: 250px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 14px;
+    background: #f9fafb;
+    border: var(--border-width) solid var(--border-color);
+    outline: none;
+    resize: vertical;
+}
+
+.ai-code-textarea:focus {
+    box-shadow: 3px 3px 0 var(--border-color);
+}
+
+/* Skipped sections recommendation list */
+.skipped-sections-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skipped-section-item {
+    border: 2px solid var(--border-color);
+    background: #fbfbfb;
+    padding: 16px;
+    box-shadow: 3px 3px 0 var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skipped-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 4px;
+    align-self: flex-start;
+}
+
+.skipped-section-reason {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #dc2626; /* Red for warning */
+    display: flex;
+    gap: 6px;
+}
+
+.skipped-section-reason::before {
+    content: "❌ Dilewati karena:";
+    font-weight: 700;
+}
+
+.skipped-section-suggestion {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.skipped-section-suggestion-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+}
+
+.skipped-section-suggestion-box {
+    font-family: 'Fira Code', monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 10px;
+    white-space: pre-wrap;
 }
 

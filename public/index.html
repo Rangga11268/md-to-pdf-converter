@@ -57,6 +57,7 @@
                  <div class="tabs-container">
                      <button id="tab-editor" class="tab-btn active">EDITOR</button>
                      <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
+                     <button id="tab-ai-reviewer" class="tab-btn">AI REVIEWER</button>
                  </div>
                  <div class="actions">
                      <select id="select-template" class="btn btn-secondary select-template-btn">
@@ -114,6 +115,77 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
             <!-- Live Preview Area -->
             <div id="live-preview-container" class="live-preview-container" style="display: none;">
                 <div id="a4-sheet" class="a4-sheet"></div>
+            </div>
+
+            <!-- AI Reviewer Area -->
+            <div id="ai-reviewer-container" class="ai-reviewer-container" style="display: none;">
+                <div class="ai-input-zone">
+                    <label for="job-description-input" class="ai-input-label">TEMPEL DESKRIPSI PEKERJAAN (JOB DESCRIPTION)</label>
+                    <textarea id="job-description-input" placeholder="Tempel persyaratan kerja, tanggung jawab, dan kualifikasi lowongan pekerjaan di sini untuk mencocokkan CV Anda..."></textarea>
+                    <button id="btn-review-cv" class="btn-review-cv">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span>ANALISIS CV DENGAN AI</span>
+                    </button>
+                </div>
+                
+                <!-- AI Review Results Dashboard (Hidden initially) -->
+                <div id="ai-results-dashboard" class="ai-results-dashboard" style="display: none;">
+                    <div class="ai-results-grid">
+                        <!-- Match Score Card -->
+                        <div class="ai-result-card score-card">
+                            <span class="card-tag">ATS MATCH SCORE</span>
+                            <div class="score-circle">
+                                <span id="ai-score-value">0</span><span class="pct">%</span>
+                            </div>
+                            <p class="score-comment" id="ai-score-comment">Menunggu analisis...</p>
+                        </div>
+                        
+                        <!-- Missing Keywords Card -->
+                        <div class="ai-result-card keywords-card">
+                            <span class="card-tag yellow">KATA KUNCI YANG HILANG (TOP 5)</span>
+                            <ul class="keywords-list" id="ai-keywords-list">
+                                <!-- Filled dynamically -->
+                            </ul>
+                        </div>
+                        
+                        <!-- Red Flags Card -->
+                        <div class="ai-result-card flags-card">
+                            <span class="card-tag red">RED FLAGS (10 DETIK SCREENING)</span>
+                            <ul class="flags-list" id="ai-flags-list">
+                                <!-- Filled dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Google XYZ Experience Suggestions -->
+                    <div class="ai-full-card rewritten-card">
+                        <div class="card-header-actions">
+                            <span class="card-tag purple">PENGALAMAN KERJA TULIS ULANG (GOOGLE XYZ FORMULA)</span>
+                            <button id="btn-copy-rewritten" class="btn btn-secondary btn-copy-rewritten">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span>SALIN HASIL</span>
+                            </button>
+                        </div>
+                        <p class="card-desc">Format di bawah menggunakan rumus: *Berhasil melakukan X yang diukur dengan Y dengan melakukan Z*.</p>
+                        <textarea id="ai-rewritten-experience" class="ai-code-textarea" readonly></textarea>
+                    </div>
+                    
+                    <!-- Skipped Sections and Scroll Stoppers -->
+                    <div class="ai-full-card skipped-card">
+                        <span class="card-tag blue">REKOMENDASI ATS (SCROLL-STOPPING SECTIONS)</span>
+                        <p class="card-desc">Bagian resume Anda yang kemungkinan besar dilewati recruiter beserta saran perbaikannya.</p>
+                        <div class="skipped-sections-list" id="ai-skipped-sections-list">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
