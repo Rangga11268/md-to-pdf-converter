@@ -197,6 +197,7 @@ body {
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
+    white-space: nowrap; /* Prevent text wrapping inside tab buttons */
 }
 
 .tab-btn:hover {
@@ -214,6 +215,7 @@ body {
     display: flex;
     gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn {
@@ -232,6 +234,7 @@ body {
     justify-content: center;
     gap: 8px;
     text-transform: uppercase;
+    white-space: nowrap; /* Prevent text wrapping inside buttons */
 }
 
 .btn-icon {
@@ -277,6 +280,7 @@ body {
     align-items: center;
     text-transform: uppercase;
     outline: none;
+    white-space: nowrap; /* Prevent text wrapping inside select option display */
     
     /* Custom arrow background to avoid browser defaults */
     -webkit-appearance: none;
@@ -314,9 +318,30 @@ body {
     width: 100%;
 }
 
+/* Dedicated styling for the editor panel header to stack tabs and actions on desktop */
+.editor-panel .panel-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.editor-panel .tabs-container {
+    align-self: flex-start;
+}
+
+.editor-panel .actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
 /* Responsive fixes for panel header */
 @media (max-width: 900px) {
-    .panel-header {
+    .editor-panel .panel-header {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
@@ -345,6 +370,19 @@ body {
         width: 100%;
         justify-content: center;
         margin: 0;
+    }
+}
+
+/* Shrink button styles slightly for ultra-small mobile screens to avoid text overflowing borders */
+@media (max-width: 480px) {
+    .btn, .tab-btn, .select-template-btn {
+        font-size: 11px;
+        padding: 0 8px;
+    }
+    .select-template-btn {
+        padding-right: 24px;
+        background-position: right 6px center;
+        background-size: 11px;
     }
 }
 
