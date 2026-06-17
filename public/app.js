@@ -555,9 +555,7 @@ Darell Rangga Putra Rachman`;
     }
 
     async function triggerNativePrint() {
-        await customAlert('Server-side PDF generator tidak aktif di Vercel (Hobby limits). Kami akan mengalihkan Anda ke dialog Cetak Browser (Save as PDF).\n\n💡 TIPS: Centang opsi "Background graphics" di setelan cetak agar warna aksen desain Anda muncul sempurna.');
-        
-        // Switch to preview tab to make sure it's rendered and visible
+        // Switch to preview tab so content is visible for printing
         tabEditor.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
@@ -573,6 +571,11 @@ Darell Rangga Putra Rachman`;
         setTimeout(() => {
             window.print();
         }, 300);
+    }
+
+    async function triggerNativePrintWithNotice(message) {
+        await customAlert(message || '💡 TIPS: Di dialog cetak, pilih "Save as PDF" lalu centang "Background graphics" agar warna aksen muncul sempurna.');
+        await triggerNativePrint();
     }
 
     // Convert Button trigger
@@ -607,14 +610,20 @@ Darell Rangga Putra Rachman`;
 
             if (!response.ok) {
                 let hasFallback = false;
+                let errMessage = '';
                 try {
                     const errData = await response.json();
                     hasFallback = errData.fallback || false;
+                    errMessage = errData.error || '';
                 } catch(e) {}
                 
                 if (hasFallback) {
                     hideLoader();
-                    await triggerNativePrint();
+                    await triggerNativePrintWithNotice(
+                        errMessage.includes('cold start') || errMessage.includes('tidur')
+                            ? `⏳ PDF server sedang dalam cold start (baru bangun dari tidur). Coba klik UNDUH PDF lagi dalam 30 detik.\n\nSementara itu, kami buka dialog Cetak Browser sebagai alternatif. Pilih "Save as PDF" dan centang "Background graphics".`
+                            : `💡 Gunakan dialog Cetak Browser: pilih "Save as PDF" lalu centang "Background graphics" agar warna aksen muncul sempurna.`
+                    );
                     return;
                 }
                 throw new Error('Gagal membuat PDF dari server.');
@@ -634,6 +643,7 @@ Darell Rangga Putra Rachman`;
         } catch (error) {
             console.error('Error saat konversi:', error);
             hideLoader();
+            // Silent fallback to browser print
             await triggerNativePrint();
         } finally {
             hideLoader();
