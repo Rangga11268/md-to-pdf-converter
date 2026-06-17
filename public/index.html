@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD2CV — Markdown to ATS CV PDF Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Load marked CDN for frontend live rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <div class="logo-box">MD2CV</div>
+                </div>
+                <div class="tagline">MARKDOWN TO ATS CV CONVERTER</div>
+            </div>
+            <p class="subtitle">Ubah file Markdown Anda menjadi PDF CV satu halaman standar ATS secara instan. Tanpa ribet, langsung siap pakai.</p>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Editor & Preview Panel -->
+        <section class="panel editor-panel">
+            <div class="panel-header">
+                <div class="tabs-container">
+                    <button id="tab-editor" class="tab-btn active">EDITOR</button>
+                    <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
+                </div>
+                <div class="actions">
+                    <button id="btn-clear" class="btn btn-secondary" title="Kosongkan Editor">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>BERSIHKAN</span>
+                    </button>
+                    <button id="btn-download-md" class="btn btn-secondary" title="Unduh File .md">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>UNDUH .MD</span>
+                    </button>
+                    <label for="file-upload" class="btn btn-primary file-label">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>PILIH FILE CV .MD</span>
+                        <input type="file" id="file-upload" accept=".md" />
+                    </label>
+                </div>
+            </div>
+            
+            <div class="drag-zone" id="drag-zone">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drag-icon">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>Seret & lepas file CV <code>.md</code> di sini, atau klik untuk memilih file...</p>
+                <span id="uploaded-filename" class="filename-badge" style="display: none;"></span>
+            </div>
+
+            <!-- Editor Input -->
+            <textarea id="markdown-input" placeholder="# DARELL RANGGA PUTRA RACHMAN
+**SOFTWARE DEVELOPER**
+
+Bekasi, Jawa Barat | darrelrangga@gmail.com | +62 8978638973
+darellrangga.me | linkedin.com/in/darell-rangga-1320b634b | github.com/Rangga11268
+
+## PROFIL PROFESIONAL
+Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 tahun...
+
+## KUALIFIKASI TEKNIS
+* **Keahlian Web:** HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS
+* **Teknologi Backend:** Node.js, PHP (Laravel), MySQL, PostgreSQL, MongoDB
+* **Tools & Workflow:** Git, GitHub, Docker, AWS (EC2, S3)
+
+## PENGALAMAN KERJA
+**Software Developer | Contract / Independent**  
+*Des 2024 – Sekarang*
+* **[Backend Development]** Merancang dan mengembangkan RESTful API menggunakan PHP Laravel.
+* **[Database Design]** Mendesain skema basis data relasional MySQL.
+
+## PENDIDIKAN
+**S1 Sistem Informasi | Universitas Bina Sarana Informatika**  
+*Sep 2024 – Sekarang*
+* IPK: 4.00 / 4.00"></textarea>
+
+            <!-- Live Preview Area -->
+            <div id="live-preview-container" class="live-preview-container" style="display: none;">
+                <div id="a4-sheet" class="a4-sheet"></div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="panel settings-panel">
+            <div class="panel-header">
+                <h2>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="header-icon">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                    </svg>
+                    <span>DESAIN & TATA LETAK</span>
+                </h2>
+            </div>
+
+            <div class="settings-grid">
+                <!-- Font Family -->
+                <div class="setting-group">
+                    <label for="setting-font">JENIS FONT CV</label>
+                    <select id="setting-font">
+                        <option value="Arial, Helvetica, sans-serif" selected>Arial (ATS Standard)</option>
+                        <option value="'Inter', sans-serif">Inter (Modern Sans-Serif)</option>
+                        <option value="Georgia, serif">Georgia (Classic Serif)</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                    </select>
+                </div>
+
+                <!-- Font Color Accent -->
+                <div class="setting-group">
+                    <label for="setting-color">WARNA AKSEN CV</label>
+                    <select id="setting-color">
+                        <option value="#000000" selected>Hitam Standar</option>
+                        <option value="#1e3a8a">Biru Navy</option>
+                        <option value="#064e3b">Hijau Emerald</option>
+                        <option value="#334155">Abu-abu Slate</option>
+                    </select>
+                </div>
+
+                <!-- Font Size -->
+                <div class="setting-group">
+                    <div class="setting-label-val">
+                        <label for="setting-size">UKURAN FONT DASAR</label>
+                        <span id="val-size" class="value-badge">8.5pt</span>
+                    </div>
+                    <input type="range" id="setting-size" min="7.5" max="12" step="0.5" value="8.5">
+                </div>
+
+                <!-- Line Height -->
+                <div class="setting-group">
+                    <div class="setting-label-val">
+                        <label for="setting-height">SPASI BARIS</label>
+                        <span id="val-height" class="value-badge">1.25</span>
+                    </div>
+                    <input type="range" id="setting-height" min="1.1" max="1.6" step="0.05" value="1.25">
+                </div>
+
+                <!-- Page Margin -->
+                <div class="setting-group">
+                    <div class="setting-label-val">
+                        <label>MARGIN HALAMAN (A4)</label>
+                        <span id="val-margin" class="value-badge">0.8cm 1.2cm</span>
+                    </div>
+                    <div class="margin-inputs">
+                        <div class="margin-sub-input">
+                            <label for="setting-margin-tb">Atas / Bawah</label>
+                            <input type="range" id="setting-margin-tb" min="0.5" max="2.0" step="0.1" value="0.8">
+                        </div>
+                        <div class="margin-sub-input">
+                            <label for="setting-margin-lr">Kiri / Kanan</label>
+                            <input type="range" id="setting-margin-lr" min="0.5" max="2.0" step="0.1" value="1.2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="convert-action">
+                <button id="btn-convert" class="btn-convert">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span class="btn-text">UNDUH PDF CV</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+
+            <!-- ATS Key-Section Checklist -->
+            <div class="panel ats-checklist-panel">
+                <div class="checklist-header">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="header-icon">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>ATS CV CHECKLIST</span>
+                </div>
+                <ul class="checklist-items">
+                    <li id="chk-contact">
+                        <span class="chk-box"></span>
+                        <span class="chk-text">Informasi Kontak (Email & HP)</span>
+                    </li>
+                    <li id="chk-profile">
+                        <span class="chk-box"></span>
+                        <span class="chk-text">Profil Profesional / Ringkasan</span>
+                    </li>
+                    <li id="chk-skills">
+                        <span class="chk-box"></span>
+                        <span class="chk-text">Keahlian / Kualifikasi Teknis</span>
+                    </li>
+                    <li id="chk-experience">
+                        <span class="chk-box"></span>
+                        <span class="chk-text">Pengalaman Kerja / Proyek</span>
+                    </li>
+                    <li id="chk-education">
+                        <span class="chk-box"></span>
+                        <span class="chk-text">Riwayat Pendidikan</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <p>Ekspor PDF CV otomatis disesuaikan secara dinamis agar pas dalam satu halaman kertas A4.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>© 2026 MD2CV. Didesain dengan gaya Neo-Brutalisme.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
