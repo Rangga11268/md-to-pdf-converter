@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD2CV — Markdown to ATS CV PDF Converter</title>
+    <title>MD2CV — Markdown to ATS CV & Letter Converter</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Load marked CDN for frontend live rendering -->
@@ -23,9 +23,9 @@
                     </svg>
                     <div class="logo-box">MD2CV</div>
                 </div>
-                <div class="tagline">MARKDOWN TO ATS CV CONVERTER</div>
+                <div class="tagline">MARKDOWN TO ATS CV & LETTER CONVERTER</div>
             </div>
-            <p class="subtitle">Ubah file Markdown Anda menjadi PDF CV satu halaman standar ATS secara instan. Tanpa ribet, langsung siap pakai.</p>
+            <p class="subtitle">Ubah file Markdown Anda menjadi PDF CV atau Surat Lamaran satu halaman secara instan. Tanpa ribet, langsung siap pakai.</p>
         </div>
     </header>
 
@@ -38,6 +38,11 @@
                     <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
                 </div>
                 <div class="actions">
+                    <select id="select-template" class="btn btn-secondary select-template-btn">
+                        <option value="" disabled selected>MUAT TEMPLATE</option>
+                        <option value="cv">Template CV</option>
+                        <option value="letter">Template Surat Lamaran</option>
+                    </select>
                     <button id="btn-clear" class="btn btn-secondary" title="Kosongkan Editor">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
                             <polyline points="3 6 5 6 21 6"></polyline>
@@ -59,7 +64,7 @@
                             <polyline points="17 8 12 3 7 8"></polyline>
                             <line x1="12" y1="3" x2="12" y2="15"></line>
                         </svg>
-                        <span>PILIH FILE CV .MD</span>
+                        <span>PILIH FILE .MD</span>
                         <input type="file" id="file-upload" accept=".md" />
                     </label>
                 </div>
@@ -71,7 +76,7 @@
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
-                <p>Seret & lepas file CV <code>.md</code> di sini, atau klik untuk memilih file...</p>
+                <p>Seret & lepas file <code>.md</code> di sini, atau klik untuk memilih file...</p>
                 <span id="uploaded-filename" class="filename-badge" style="display: none;"></span>
             </div>
 
@@ -83,23 +88,7 @@ Bekasi, Jawa Barat | darrelrangga@gmail.com | +62 8978638973
 darellrangga.me | linkedin.com/in/darell-rangga-1320b634b | github.com/Rangga11268
 
 ## PROFIL PROFESIONAL
-Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 tahun...
-
-## KUALIFIKASI TEKNIS
-* **Keahlian Web:** HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS
-* **Teknologi Backend:** Node.js, PHP (Laravel), MySQL, PostgreSQL, MongoDB
-* **Tools & Workflow:** Git, GitHub, Docker, AWS (EC2, S3)
-
-## PENGALAMAN KERJA
-**Software Developer | Contract / Independent**  
-*Des 2024 – Sekarang*
-* **[Backend Development]** Merancang dan mengembangkan RESTful API menggunakan PHP Laravel.
-* **[Database Design]** Mendesain skema basis data relasional MySQL.
-
-## PENDIDIKAN
-**S1 Sistem Informasi | Universitas Bina Sarana Informatika**  
-*Sep 2024 – Sekarang*
-* IPK: 4.00 / 4.00"></textarea>
+Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 tahun..."></textarea>
 
             <!-- Live Preview Area -->
             <div id="live-preview-container" class="live-preview-container" style="display: none;">
@@ -129,7 +118,7 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
             <div class="settings-grid">
                 <!-- Font Family -->
                 <div class="setting-group">
-                    <label for="setting-font">JENIS FONT CV</label>
+                    <label for="setting-font">JENIS FONT DOKUMEN</label>
                     <select id="setting-font">
                         <option value="Arial, Helvetica, sans-serif" selected>Arial (ATS Standard)</option>
                         <option value="'Inter', sans-serif">Inter (Modern Sans-Serif)</option>
@@ -140,7 +129,7 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
 
                 <!-- Font Color Accent -->
                 <div class="setting-group">
-                    <label for="setting-color">WARNA AKSEN CV</label>
+                    <label for="setting-color">WARNA AKSEN</label>
                     <select id="setting-color">
                         <option value="#000000" selected>Hitam Standar</option>
                         <option value="#1e3a8a">Biru Navy</option>
@@ -193,7 +182,7 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
                         <polyline points="7 10 12 15 17 10"></polyline>
                         <line x1="12" y1="15" x2="12" y2="3"></line>
                     </svg>
-                    <span class="btn-text">UNDUH PDF CV</span>
+                    <span class="btn-text">UNDUH PDF</span>
                     <span class="spinner"></span>
                 </button>
             </div>
@@ -239,7 +228,7 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
                         <line x1="12" y1="8" x2="12.01" y2="8"></line>
                     </svg>
                 </div>
-                <p>Ekspor PDF CV otomatis disesuaikan secara dinamis agar pas dalam satu halaman kertas A4.</p>
+                <p>Ekspor PDF otomatis disesuaikan secara dinamis agar pas dalam satu halaman kertas A4.</p>
             </div>
         </section>
     </main>
@@ -247,6 +236,72 @@ Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 
     <footer class="app-footer">
         <p>Darell Rangga Putra Rachman — darellrangga@gmail.com | +62 8978638973 | darellrangga.me</p>
     </footer>
+
+    <!-- Custom Loading Overlay -->
+    <div id="custom-loader" class="custom-loader-overlay" style="display: none;">
+        <div class="loader-box">
+            <div class="loader-header">
+                <span class="loader-dot red"></span>
+                <span class="loader-dot yellow"></span>
+                <span class="loader-dot green"></span>
+                <span class="loader-title">MD2CV COMPILER v1.0</span>
+            </div>
+            <div class="loader-body">
+                <div class="spinner-neobrutal"></div>
+                <p id="loader-text" class="loader-text">Sedang memproses dokumen...</p>
+                <div class="loader-progress-bar">
+                    <div class="loader-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Overlay -->
+    <div id="custom-alert" class="custom-alert-overlay" style="display: none;">
+        <div class="alert-box">
+            <div class="alert-header">
+                <span class="alert-title">NOTIFIKASI SISTEM</span>
+                <button class="alert-close-btn" id="custom-alert-close-x">&times;</button>
+            </div>
+            <div class="alert-body">
+                <div class="alert-icon-wrapper" id="custom-alert-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <p id="custom-alert-message">Pesan notifikasi.</p>
+            </div>
+            <div class="alert-footer">
+                <button class="btn btn-primary alert-ok-btn" id="custom-alert-btn-ok">OKE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Overlay -->
+    <div id="custom-confirm" class="custom-alert-overlay" style="display: none;">
+        <div class="alert-box">
+            <div class="alert-header">
+                <span class="alert-title">KONFIRMASI TINDAKAN</span>
+                <button class="alert-close-btn" id="custom-confirm-close-x">&times;</button>
+            </div>
+            <div class="alert-body">
+                <div class="alert-icon-wrapper confirm-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <p id="custom-confirm-message">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+            </div>
+            <div class="alert-footer">
+                <button class="btn btn-secondary alert-cancel-btn" id="custom-confirm-btn-cancel">BATAL</button>
+                <button class="btn btn-primary alert-confirm-btn" id="custom-confirm-btn-confirm">YA, LANJUTKAN</button>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
