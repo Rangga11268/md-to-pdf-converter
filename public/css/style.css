@@ -186,6 +186,10 @@ body {
   align-items: start;
 }
 
+.app-container.full-width {
+  grid-template-columns: 1fr;
+}
+
 @media (max-width: 1024px) {
   .app-container {
     grid-template-columns: 1fr;

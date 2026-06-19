@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const pricingContainer = document.getElementById('pricing-container');
     const btnStartEditor = document.getElementById('btn-start-editor');
     const a4Sheet = document.getElementById('a4-sheet');
+    const appContainer = document.querySelector('.app-container');
+    const settingsPanel = document.querySelector('.settings-panel');
+
+    // Set default Home view state (hide layout settings panel)
+    if (settingsPanel && appContainer) {
+        settingsPanel.style.display = 'none';
+        appContainer.classList.add('full-width');
+    }
 
     // Pricing elements
     const btnBuyTokens = document.getElementById('btn-buy-tokens');
@@ -424,6 +432,12 @@ Darell Rangga Putra Rachman`;
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
         homeContainer.style.display = 'flex';
+        
+        // Hide right panel for Home
+        if (settingsPanel && appContainer) {
+            settingsPanel.style.display = 'none';
+            appContainer.classList.add('full-width');
+        }
     });
 
     tabEditor.addEventListener('click', () => {
@@ -438,6 +452,12 @@ Darell Rangga Putra Rachman`;
         pricingContainer.style.display = 'none';
         dragZone.style.display = 'flex';
         markdownInput.style.display = 'block';
+        
+        // Show right panel for Editor
+        if (settingsPanel && appContainer) {
+            settingsPanel.style.display = 'block';
+            appContainer.classList.remove('full-width');
+        }
     });
 
     tabPreview.addEventListener('click', () => {
@@ -453,6 +473,12 @@ Darell Rangga Putra Rachman`;
         dragZone.style.display = 'none';
         livePreviewContainer.style.display = 'block';
         renderLivePreview();
+        
+        // Show right panel for Live Preview
+        if (settingsPanel && appContainer) {
+            settingsPanel.style.display = 'block';
+            appContainer.classList.remove('full-width');
+        }
     });
 
     tabAiReviewer.addEventListener('click', () => {
@@ -467,6 +493,12 @@ Darell Rangga Putra Rachman`;
         pricingContainer.style.display = 'none';
         dragZone.style.display = 'none';
         aiReviewerContainer.style.display = 'block';
+        
+        // Hide right panel for AI Reviewer
+        if (settingsPanel && appContainer) {
+            settingsPanel.style.display = 'none';
+            appContainer.classList.add('full-width');
+        }
     });
 
     tabPricing.addEventListener('click', () => {
@@ -481,6 +513,12 @@ Darell Rangga Putra Rachman`;
         aiReviewerContainer.style.display = 'none';
         dragZone.style.display = 'none';
         pricingContainer.style.display = 'flex';
+        
+        // Hide right panel for Pricing
+        if (settingsPanel && appContainer) {
+            settingsPanel.style.display = 'none';
+            appContainer.classList.add('full-width');
+        }
     });
 
     // Landing Page CTA button click handler
