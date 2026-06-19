@@ -1,4 +1,42 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Helper to load components dynamically
+    async function loadComponents() {
+        const components = [
+            { id: 'home-placeholder', url: 'components/home.html', useOuterHTML: true },
+            { id: 'editor-placeholder', url: 'components/editor.html', useOuterHTML: true },
+            { id: 'preview-placeholder', url: 'components/preview.html', useOuterHTML: true },
+            { id: 'reviewer-placeholder', url: 'components/reviewer.html', useOuterHTML: true },
+            { id: 'pricing-placeholder', url: 'components/pricing.html', useOuterHTML: true },
+            { id: 'settings-placeholder', url: 'components/settings.html', useOuterHTML: false },
+            { id: 'dialogs-placeholder', url: 'components/dialogs.html', useOuterHTML: false }
+        ];
+
+        const fetchPromises = components.map(async (comp) => {
+            const el = document.getElementById(comp.id);
+            if (!el) return;
+            const response = await fetch(comp.url);
+            if (!response.ok) {
+                throw new Error(`Gagal memuat komponen: ${comp.url}`);
+            }
+            const html = await response.text();
+            if (comp.useOuterHTML) {
+                el.outerHTML = html;
+            } else {
+                el.innerHTML = html;
+            }
+        });
+
+        await Promise.all(fetchPromises);
+    }
+
+    try {
+        await loadComponents();
+    } catch (err) {
+        console.error('Fatal: Gagal memuat komponen UI aplikasi:', err);
+        alert('Gagal memuat beberapa komponen aplikasi. Silakan muat ulang halaman.');
+        return;
+    }
+
     // Elements
     const markdownInput = document.getElementById('markdown-input');
     const btnClear = document.getElementById('btn-clear');
@@ -23,12 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnStartEditor = document.getElementById('btn-start-editor');
     const a4Sheet = document.getElementById('a4-sheet');
     const appContainer = document.querySelector('.app-container');
+    // Elements settingsPanel
     const settingsPanel = document.querySelector('.settings-panel');
+    const actionsContainer = document.querySelector('.actions');
 
-    // Set default Home view state (hide layout settings panel)
+    // Set default Home view state (hide layout settings panel & actions)
     if (settingsPanel && appContainer) {
         settingsPanel.style.display = 'none';
         appContainer.classList.add('full-width');
+    }
+    if (actionsContainer) {
+        actionsContainer.style.display = 'none';
     }
 
     // Pricing elements
@@ -433,6 +476,9 @@ Darell Rangga Putra Rachman`;
         pricingContainer.style.display = 'none';
         homeContainer.style.display = 'flex';
         
+        // Hide actions in header for Home
+        if (actionsContainer) actionsContainer.style.display = 'none';
+
         // Hide right panel for Home
         if (settingsPanel && appContainer) {
             settingsPanel.style.display = 'none';
@@ -453,6 +499,9 @@ Darell Rangga Putra Rachman`;
         dragZone.style.display = 'flex';
         markdownInput.style.display = 'block';
         
+        // Show actions in header for Editor
+        if (actionsContainer) actionsContainer.style.display = 'flex';
+
         // Show right panel for Editor
         if (settingsPanel && appContainer) {
             settingsPanel.style.display = 'block';
@@ -474,6 +523,9 @@ Darell Rangga Putra Rachman`;
         livePreviewContainer.style.display = 'block';
         renderLivePreview();
         
+        // Show actions in header for Live Preview
+        if (actionsContainer) actionsContainer.style.display = 'flex';
+
         // Show right panel for Live Preview
         if (settingsPanel && appContainer) {
             settingsPanel.style.display = 'block';
@@ -494,6 +546,9 @@ Darell Rangga Putra Rachman`;
         dragZone.style.display = 'none';
         aiReviewerContainer.style.display = 'block';
         
+        // Hide actions in header for AI Reviewer
+        if (actionsContainer) actionsContainer.style.display = 'none';
+
         // Hide right panel for AI Reviewer
         if (settingsPanel && appContainer) {
             settingsPanel.style.display = 'none';
@@ -514,6 +569,9 @@ Darell Rangga Putra Rachman`;
         dragZone.style.display = 'none';
         pricingContainer.style.display = 'flex';
         
+        // Hide actions in header for Pricing
+        if (actionsContainer) actionsContainer.style.display = 'none';
+
         // Hide right panel for Pricing
         if (settingsPanel && appContainer) {
             settingsPanel.style.display = 'none';
@@ -635,16 +693,7 @@ Darell Rangga Putra Rachman`;
 
     async function triggerNativePrint() {
         // Switch to preview tab so content is visible for printing
-        tabEditor.classList.remove('active');
-        tabAiReviewer.classList.remove('active');
-        tabPricing.classList.remove('active');
-        tabPreview.classList.add('active');
-        markdownInput.style.display = 'none';
-        aiReviewerContainer.style.display = 'none';
-        pricingContainer.style.display = 'none';
-        dragZone.style.display = 'none';
-        livePreviewContainer.style.display = 'block';
-        renderLivePreview();
+        tabPreview.click();
         
         // Let the DOM update, then open native print dialog
         setTimeout(() => {
@@ -1097,14 +1146,7 @@ Darell Rangga Putra Rachman`;
             renderLivePreview();
 
             // Auto-redirect to Live Preview tab
-            tabEditor.classList.remove('active');
-            tabAiReviewer.classList.remove('active');
-            tabPricing.classList.remove('active');
-            tabPreview.classList.add('active');
-            markdownInput.style.display = 'none';
-            aiReviewerContainer.style.display = 'none';
-            pricingContainer.style.display = 'none';
-            livePreviewContainer.style.display = 'block';
+            tabPreview.click();
             
             await customAlert('CV hasil optimasi AI berhasil diterapkan ke Editor utama! Pratinjau dokumen PDF baru Anda sekarang aktif.');
         }

@@ -1,0 +1,65 @@
+<!-- Custom Loading Overlay -->
+<div id="custom-loader" class="custom-loader-overlay" style="display: none;">
+    <div class="loader-box">
+        <div class="loader-header">
+            <span class="loader-dot red"></span>
+            <span class="loader-dot yellow"></span>
+            <span class="loader-dot green"></span>
+            <span class="loader-title">MD2CV COMPILER v1.0</span>
+        </div>
+        <div class="loader-body">
+            <div class="spinner-neobrutal"></div>
+            <p id="loader-text" class="loader-text">Sedang memproses dokumen...</p>
+            <div class="loader-progress-bar">
+                <div class="loader-progress-fill"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Alert Overlay -->
+<div id="custom-alert" class="custom-alert-overlay" style="display: none;">
+    <div class="alert-box">
+        <div class="alert-header">
+            <span class="alert-title">NOTIFIKASI SISTEM</span>
+            <button class="alert-close-btn" id="custom-alert-close-x">&times;</button>
+        </div>
+        <div class="alert-body">
+            <div class="alert-icon-wrapper" id="custom-alert-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </div>
+            <p id="custom-alert-message">Pesan notifikasi.</p>
+        </div>
+        <div class="alert-footer">
+            <button class="btn btn-primary alert-ok-btn" id="custom-alert-btn-ok">OKE</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Confirm Overlay -->
+<div id="custom-confirm" class="custom-alert-overlay" style="display: none;">
+    <div class="alert-box">
+        <div class="alert-header">
+            <span class="alert-title">KONFIRMASI TINDAKAN</span>
+            <button class="alert-close-btn" id="custom-confirm-close-x">&times;</button>
+        </div>
+        <div class="alert-body">
+            <div class="alert-icon-wrapper confirm-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <p id="custom-confirm-message">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+        </div>
+        <div class="alert-footer">
+            <button class="btn btn-secondary alert-cancel-btn" id="custom-confirm-btn-cancel">BATAL</button>
+            <button class="btn btn-primary alert-confirm-btn" id="custom-confirm-btn-confirm">YA, LANJUTKAN</button>
+        </div>
+    </div>
+</div>

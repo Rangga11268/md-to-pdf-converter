@@ -1,0 +1,140 @@
+<div class="panel-header">
+    <h2>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="header-icon">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+        </svg>
+        <span>DESAIN & TATA LETAK</span>
+    </h2>
+</div>
+
+<div class="settings-grid">
+    <!-- Font Family -->
+    <div class="setting-group">
+        <label for="setting-font">JENIS FONT DOKUMEN</label>
+        <select id="setting-font">
+            <option value="Arial, Helvetica, sans-serif" selected>Arial (ATS Standard)</option>
+            <option value="'Inter', sans-serif">Inter (Modern Sans-Serif)</option>
+            <option value="Georgia, serif">Georgia (Classic Serif)</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+        </select>
+    </div>
+
+    <!-- Font Color Accent -->
+    <div class="setting-group">
+        <label for="setting-color">WARNA AKSEN</label>
+        <select id="setting-color">
+            <option value="#000000" selected>Hitam Standar</option>
+            <option value="#1e3a8a">Biru Navy</option>
+            <option value="#064e3b">Hijau Emerald</option>
+            <option value="#334155">Abu-abu Slate</option>
+        </select>
+    </div>
+
+    <!-- Font Size -->
+    <div class="setting-group">
+        <div class="setting-label-val">
+            <label for="setting-size">UKURAN FONT DASAR</label>
+            <span id="val-size" class="value-badge">8.5pt</span>
+        </div>
+        <input type="range" id="setting-size" min="7.5" max="12" step="0.5" value="8.5">
+    </div>
+
+    <!-- Line Height -->
+    <div class="setting-group">
+        <div class="setting-label-val">
+            <label for="setting-height">SPASI BARIS</label>
+            <span id="val-height" class="value-badge">1.25</span>
+        </div>
+        <input type="range" id="setting-height" min="1.1" max="1.6" step="0.05" value="1.25">
+    </div>
+
+    <!-- Page Margin -->
+    <div class="setting-group">
+        <div class="setting-label-val">
+            <label>MARGIN HALAMAN (A4)</label>
+            <span id="val-margin" class="value-badge">0.8cm 1.2cm</span>
+        </div>
+        <div class="margin-inputs">
+            <div class="margin-sub-input">
+                <label for="setting-margin-tb">Atas / Bawah</label>
+                <input type="range" id="setting-margin-tb" min="0.5" max="2.0" step="0.1" value="0.8">
+            </div>
+            <div class="margin-sub-input">
+                <label for="setting-margin-lr">Kiri / Kanan</label>
+                <input type="range" id="setting-margin-lr" min="0.5" max="2.0" step="0.1" value="1.2">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="convert-actions-group">
+    <button id="btn-convert" class="btn-convert">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span class="btn-text">UNDUH PDF</span>
+        <span class="spinner"></span>
+    </button>
+    <button id="btn-print-manual" class="btn-print-manual">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        <span class="btn-text">CETAK MANUAL</span>
+    </button>
+</div>
+
+<!-- ATS Key-Section Checklist -->
+<div class="panel ats-checklist-panel">
+    <div class="checklist-header">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="header-icon">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span>ATS CV CHECKLIST</span>
+    </div>
+    <ul class="checklist-items">
+        <li id="chk-contact">
+            <span class="chk-box"></span>
+            <span class="chk-text">Informasi Kontak (Email & HP)</span>
+        </li>
+        <li id="chk-profile">
+            <span class="chk-box"></span>
+            <span class="chk-text">Profil Profesional / Ringkasan</span>
+        </li>
+        <li id="chk-skills">
+            <span class="chk-box"></span>
+            <span class="chk-text">Keahlian / Kualifikasi Teknis</span>
+        </li>
+        <li id="chk-experience">
+            <span class="chk-box"></span>
+            <span class="chk-text">Pengalaman Kerja / Proyek</span>
+        </li>
+        <li id="chk-education">
+            <span class="chk-box"></span>
+            <span class="chk-text">Riwayat Pendidikan</span>
+        </li>
+    </ul>
+</div>
+
+<div class="info-box">
+    <div class="info-icon">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+    </div>
+    <p>Ekspor PDF otomatis disesuaikan secara dinamis agar pas dalam satu halaman kertas A4.</p>
+</div>
