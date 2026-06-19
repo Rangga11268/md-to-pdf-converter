@@ -202,26 +202,28 @@ Berikan respons Anda dalam format JSON yang valid. Skema JSON harus tepat sepert
     "<red_flag_2>",
     "<red_flag_3>"
   ],
-  "rewrittenExperience": "<bagian_pengalaman_kerja_yang_ditulis_ulang_menggunakan_formula_Google_XYZ_Accomplish_X_as_measured_by_Y_by_doing_Z_secara_natural_dalam_format_markdown>",
+  "rewrittenExperience": "<bagian_pengalaman_kerja_yang_ditulis_ulang_menggunakan_formula_Google_XYZ_Accomplish_X_as_measured_by_Y_by_doing_Z_secara_natural_tanpa_menyertakan_label_rumus_dalam_format_markdown>",
   "skippedSections": [
     {
       "section": "<nama_bagian_1_yang_rawan_dilewati>",
       "reason": "<alasan_mengapa_dilewati>",
-      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown>"
+      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown_tanpa_menyertakan_label_rumus>"
     },
     {
       "section": "<nama_bagian_2_yang_rawan_dilewati>",
       "reason": "<alasan_mengapa_dilewati>",
-      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown>"
+      "suggestion": "<saran_tulis_ulang_agar_menarik_scroll-stopping_dalam_format_markdown_tanpa_menyertakan_label_rumus>"
     }
   ],
-  "completeMarkdown": "<seluruh_isi_CV_yang_baru_yang_telah_dioptimalkan_menggabungkan_bagian_pengalaman_kerja_yang_telah_ditulis_ulang_dan_saran_perbaikan_bagian_yang_dilewati_ke_dalam_layout_CV_utuh_dalam_format_markdown_yang_siap_disalin_dan_diterapkan_langsung_ke_editor_tanpa_kehilangan_informasi_kontak_atau_pendidikan>"
+  "completeMarkdown": "<seluruh_isi_CV_yang_baru_yang_telah_dioptimalkan_menggabungkan_bagian_pengalaman_kerja_yang_telah_ditulis_ulang_dan_saran_perbaikan_bagian_yang_dilewati_ke_dalam_layout_CV_utuh_dalam_format_markdown_yang_siap_disalin_dan_diterapkan_langsung_ke_editor_tanpa_kehilangan_informasi_kontak_atau_pendidikan_dan_TANPA_menyertakan_label_rumus>"
 }
 
 Ketentuan Tambahan:
-- Nilai "rewrittenExperience" harus berisi penulisan ulang bagian Pengalaman Kerja (Experience) dari Resume pelamar dengan menerapkan formula Google XYZ secara ketat (Accomplish X, as measured by Y, by doing Z) dan memasukkan kata kunci penting yang sebelumnya hilang.
-- Nilai "skippedSections" harus menganalisis bagian dari Resume pelamar yang berpotensi dilewati oleh recruiter yang sedang membaca cepat, lalu menyusun kembali tulisan tersebut agar menghentikan scroll pembaca.
-- Nilai "completeMarkdown" harus merupakan versi lengkap dari CV pelamar (baik CV asal berupa teks markdown atau diekstrak dari PDF CV) yang telah diperbarui bagian Pengalaman Kerja-nya dan bagian yang dilewati-nya dengan hasil optimasi di atas. Format harus rapi dan lengkap sebagai resume markdown satu halaman.
+- Nilai "rewrittenExperience" harus berisi penulisan ulang bagian Pengalaman Kerja (Experience) dari Resume pelamar dengan menerapkan formula Google XYZ secara ketat (melakukan apa/X, diukur dengan metrik keberhasilan apa/Y, dengan tindakan/cara apa/Z) secara natural.
+  PENTING: Jangan tuliskan kata-kata label seperti "Accomplish X:", "as measured by Y:", "by doing Z:", atau "Mencapai:", "Diukur melalui:", "Dengan:" secara literal di dalam teks CV yang dihasilkan. Buatlah poin-poin tersebut mengalir secara alami dan profesional sebagai teks CV standar industri.
+- Nilai "skippedSections" harus menganalisis bagian dari Resume pelamar yang berpotensi dilewati oleh recruiter yang sedang membaca cepat, lalu menyusun kembali tulisan tersebut agar menarik perhatian (scroll-stopping).
+  PENTING: Jangan tuliskan label formula literal (X, Y, Z) di dalam rekomendasi ini.
+- Nilai "completeMarkdown" harus merupakan versi lengkap dari CV pelamar (baik CV asal berupa teks markdown atau diekstrak dari PDF CV) yang telah diperbarui dengan hasil optimasi rewrittenExperience di atas. Pastikan format teks mengalir secara alami tanpa menyertakan label formula literal seperti "Accomplish X", "as measured by Y", "by doing Z", dll. Format harus rapi dan lengkap sebagai resume markdown satu halaman.
 - Pastikan output HANYA berupa JSON valid. Jangan tambahkan kata pengantar, penutup, atau tanda markdown block \`\`\`json ... \`\`\` dalam teks respon.
 `;
 
