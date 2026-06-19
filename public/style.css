@@ -2363,6 +2363,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 /* Print Styles */
 @media print {
+  html, body {
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+  }
+
   /* Hide everything on the page */
   body * {
     visibility: hidden;
