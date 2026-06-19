@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
 
         const pdfBuffer = await pdfResponse.arrayBuffer();
 
-        res.contentType('application/pdf');
+        res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="resume.pdf"');
         res.send(Buffer.from(pdfBuffer));
 
