@@ -1046,7 +1046,7 @@ textarea:focus {
 
 .a4-sheet h1 {
   font-size: 1.8em;
-  font-weight: bold;
+  font-weight: 700 !important;
   text-align: center;
   text-transform: uppercase;
   margin: 0 0 2px 0;
@@ -1055,7 +1055,7 @@ textarea:focus {
 .a4-sheet .job-title {
   text-align: center;
   font-size: 1.1em;
-  font-weight: bold;
+  font-weight: 700 !important;
   margin: 0 0 4px 0;
   text-transform: uppercase;
 }
@@ -1070,7 +1070,7 @@ textarea:focus {
 
 .a4-sheet h2 {
   font-size: 1.1em;
-  font-weight: bold;
+  font-weight: 700 !important;
   border-bottom: 1px solid #000000;
   padding-bottom: 1px;
   margin-top: 12px;
@@ -1080,7 +1080,7 @@ textarea:focus {
 
 .a4-sheet h3 {
   font-size: 1em;
-  font-weight: bold;
+  font-weight: 700 !important;
   margin-top: 6px;
   margin-bottom: 2px;
 }
@@ -1264,30 +1264,41 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--text-color);
 }
 
-/* Convert Button */
-.convert-action {
+/* Convert & Print Actions Group */
+.convert-actions-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-.btn-convert {
-  width: 100%;
+@media (max-width: 480px) {
+  .convert-actions-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-convert, .btn-print-manual {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 800;
-  padding: 14px 20px;
+  padding: 14px 10px;
   border: var(--border-width) solid var(--border-color);
   border-radius: 0;
-  color: #ffffff;
-  background: var(--accent-blue);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow); /* Blue button with yellow shadow */
+  gap: 8px;
   transition: all 0.1s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.btn-convert {
+  color: #ffffff;
+  background: var(--accent-blue);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow);
 }
 
 .btn-convert:hover {
@@ -1297,6 +1308,24 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .btn-convert:active {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0px var(--accent-yellow);
+}
+
+.btn-print-manual {
+  color: var(--text-color);
+  background: var(--accent-green);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--accent-yellow);
+}
+
+.btn-print-manual:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0px var(--accent-yellow);
+  background: #059669; /* Darker green */
+  color: #ffffff;
+}
+
+.btn-print-manual:active {
   transform: translate(2px, 2px);
   box-shadow: 3px 3px 0px var(--accent-yellow);
 }
@@ -2362,16 +2391,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
   /* A4 sheet dimensions and alignment, removing box shadow and borders */
   #a4-sheet {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 210mm !important; /* Standard A4 Width */
-    min-height: 297mm !important; /* Standard A4 Height */
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
     background: white !important;
     box-sizing: border-box !important;
+    padding: 0 !important; /* Margins are handled by @page now */
   }
 
   /* Page break optimizations for PDF rendering */
@@ -2391,9 +2420,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
     page-break-inside: avoid;
   }
 
-  /* Standard page layout definition */
+  /* Standard page layout definition: let browser control the margins */
   @page {
     size: A4;
-    margin: 0;
+    margin: 1.5cm 1.5cm 1.5cm 1.5cm; /* standard safe margin to avoid clipping */
   }
 }
+

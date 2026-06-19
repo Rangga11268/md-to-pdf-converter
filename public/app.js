@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dragZone = document.getElementById('drag-zone');
     const uploadedFilename = document.getElementById('uploaded-filename');
     const btnConvert = document.getElementById('btn-convert');
+    const btnPrintManual = document.getElementById('btn-print-manual');
     const selectTemplate = document.getElementById('select-template');
     
     // Tabs
@@ -651,6 +652,16 @@ Darell Rangga Putra Rachman`;
             btnConvert.classList.remove('loading');
             btnConvert.querySelector('.btn-text').textContent = 'Unduh PDF';
         }
+    });
+
+    // Print Manual Button trigger
+    btnPrintManual.addEventListener('click', async () => {
+        const markdown = markdownInput.value.trim();
+        if (!markdown) {
+            await customAlert('Silakan tulis atau unggah konten Markdown terlebih dahulu!');
+            return;
+        }
+        await triggerNativePrintWithNotice('💡 TIPS CETAK MANUAL:\n\n1. Atur Destination ke "Save as PDF".\n2. Centang "Background graphics" (Grafik latar belakang) agar warna dan garis tampil sempurna.\n3. Atur Margins ke "Default" atau "None".');
     });
 
     // --- AI REVIEWER FILE UPLOAD & ACTIONS STATE ---
