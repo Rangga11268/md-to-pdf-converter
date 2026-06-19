@@ -1066,6 +1066,7 @@ textarea:focus {
   font-size: 0.95em;
   margin: 0 0 2px 0;
   line-height: 1.2;
+  font-weight: 700 !important;
 }
 
 .a4-sheet h2 {
