@@ -644,8 +644,7 @@ Darell Rangga Putra Rachman`;
         } catch (error) {
             console.error('Error saat konversi:', error);
             hideLoader();
-            // Silent fallback to browser print
-            await triggerNativePrint();
+            await customAlert(`Gagal mengunduh PDF:\n${error.message || error}\n\nSilakan coba lagi, atau gunakan tombol "CETAK MANUAL" di sebelah kanan.`);
         } finally {
             hideLoader();
             btnConvert.disabled = false;
