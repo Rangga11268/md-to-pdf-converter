@@ -1630,6 +1630,72 @@ input[type="range"]::-webkit-slider-thumb:hover {
   animation: slideUpFade 0.25s ease-out;
 }
 
+/* AI Results Sub-Tabs */
+.ai-subtabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  border-bottom: var(--border-width) solid var(--border-color);
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.ai-subtab-btn {
+  font-family: "Syne", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 8px 16px;
+  border: var(--border-width) solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--border-color);
+  transition: all 0.1s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-subtab-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--border-color);
+  background: var(--bg-color);
+}
+
+.ai-subtab-btn.active {
+  background: var(--accent-yellow);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--border-color);
+}
+
+/* Tab Content Visibility */
+.ai-tab-content {
+  display: none;
+  animation: fadeInTab 0.2s ease-out;
+}
+
+.ai-tab-content.active {
+  display: block;
+}
+
+/* Specific display override for tab 1 summary grid */
+#ai-tab-summary.active {
+  display: block; /* grid will be handled by .ai-results-grid inside */
+}
+
+@keyframes fadeInTab {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes slideUpFade {
   from {
     transform: translateY(20px);

@@ -948,6 +948,13 @@ Darell Rangga Putra Rachman`;
                 aiSkippedSectionsList.appendChild(emptyMsg);
             }
 
+            // Reset to first sub-tab (RINGKASAN ATS) upon loading new analysis
+            subtabButtons.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            if (subtabButtons[0]) subtabButtons[0].classList.add('active');
+            const firstTabContent = document.getElementById('ai-tab-summary');
+            if (firstTabContent) firstTabContent.classList.add('active');
+
             // Show Dashboard
             aiResultsDashboard.style.display = 'block';
 
@@ -1042,6 +1049,27 @@ Darell Rangga Putra Rachman`;
 
     btnBuyUnlimited.addEventListener('click', async () => {
         await customAlert('Fitur Pembayaran Simulasi: Anda akan diarahkan ke gerbang pembayaran Midtrans untuk membeli Paket Akses Penuh 30 Hari seharga Rp 25.000 via QRIS / Transfer Bank.');
+    });
+
+    // AI Reviewer Sub-Tabs Interactive Handling
+    const subtabButtons = document.querySelectorAll('.ai-subtab-btn');
+    const tabContents = document.querySelectorAll('.ai-tab-content');
+
+    subtabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            
+            // Remove active classes from all buttons and contents
+            subtabButtons.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to the clicked button and target content
+            btn.classList.add('active');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
     });
 
     // Run initial checklist and preview render
