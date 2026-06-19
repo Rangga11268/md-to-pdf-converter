@@ -489,15 +489,25 @@ Darell Rangga Putra Rachman`;
             return `<div class="flex-row"><strong>${title}</strong><em>${date}</em></div>`;
         });
 
-        // Set custom marked paragraph layout for contact/links
+        // Set custom marked paragraph layout for contact/links (only before first heading)
+        let hasPassedFirstHeading = false;
         const customRenderer = new marked.Renderer();
+        
+        customRenderer.heading = function({ tokens, depth }) {
+            hasPassedFirstHeading = true;
+            const text = this.parser.parseInline(tokens);
+            return `<h${depth}>${text}</h${depth}>`;
+        };
+
         customRenderer.paragraph = function({ tokens }) {
             const text = this.parser.parseInline(tokens);
-            if (text.includes('@') && text.includes('|')) {
-                return `<p class="contact-details">${text}</p>`;
-            }
-            if (text.includes('href') && text.includes('|')) {
-                return `<p class="contact-links">${text}</p>`;
+            if (!hasPassedFirstHeading) {
+                if (text.includes('@') && text.includes('|')) {
+                    return `<p class="contact-details">${text}</p>`;
+                }
+                if (text.includes('href') && text.includes('|')) {
+                    return `<p class="contact-links">${text}</p>`;
+                }
             }
             return `<p>${text}</p>`;
         };
