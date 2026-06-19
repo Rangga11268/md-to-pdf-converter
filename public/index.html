@@ -55,7 +55,8 @@
          <section class="panel editor-panel">
              <div class="panel-header">
                  <div class="tabs-container">
-                     <button id="tab-editor" class="tab-btn active">EDITOR</button>
+                     <button id="tab-home" class="tab-btn active">BERANDA</button>
+                     <button id="tab-editor" class="tab-btn">EDITOR</button>
                      <button id="tab-preview" class="tab-btn">PRATINJAU LANGSUNG</button>
                      <button id="tab-ai-reviewer" class="tab-btn">AI REVIEWER</button>
                      <button id="tab-pricing" class="tab-btn">PRICING</button>
@@ -93,7 +94,75 @@
                  </div>
              </div>
             
-            <div class="drag-zone" id="drag-zone">
+             <!-- Landing Page Beranda -->
+             <div id="home-container" class="home-container">
+                 <div class="home-hero">
+                     <span class="home-badge">🚀 SMART ATS RESUME CREATOR</span>
+                     <h1 class="home-title">Ubah Markdown Jadi CV ATS <span class="highlight">Dalam 10 Detik</span></h1>
+                     <p class="home-subtitle">Bikin CV ramah sistem ATS HRD dengan format teks Markdown yang super cepat. Dilengkapi audit skor kelulusan AI, pembasmi Red Flags, dan perbaikan tata bahasa otomatis!</p>
+                     <div class="home-cta-group">
+                         <button id="btn-start-editor" class="btn btn-primary home-cta-btn" type="button">
+                             <span>MULAI BUAT CV SEKARANG</span>
+                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                                 <line x1="5" y1="12" x2="19" y2="12"></line>
+                                 <polyline points="12 5 19 12 12 19"></polyline>
+                             </svg>
+                         </button>
+                     </div>
+                 </div>
+
+                 <div class="home-grid">
+                     <!-- Feature 1 -->
+                     <div class="home-feature-card yellow">
+                         <div class="card-icon">✍️</div>
+                         <h4>Editor Markdown Instan</h4>
+                         <p>Tulis riwayat hidup Anda dengan format teks markdown sederhana. Lupakan ribetnya layouting manual.</p>
+                     </div>
+                     <!-- Feature 2 -->
+                     <div class="home-feature-card blue">
+                         <div class="card-icon">🤖</div>
+                         <h4>AI CV Auditor & Optimizer</h4>
+                         <p>Uji kecocokan CV Anda dengan kualifikasi lowongan. Dapatkan saran perbaikan dengan formula Google XYZ secara instan.</p>
+                     </div>
+                     <!-- Feature 3 -->
+                     <div class="home-feature-card purple">
+                         <div class="card-icon">⚙️</div>
+                         <h4>Kustomisasi Desain ATS</h4>
+                         <p>Atur jenis font (Arial, Inter, Times, Georgia), margin halaman, warna aksen, dan spasi baris sesuai standar lamaran kerja.</p>
+                     </div>
+                     <!-- Feature 4 -->
+                     <div class="home-feature-card green">
+                         <div class="card-icon">📄</div>
+                         <h4>1-Page A4 PDF Output</h4>
+                         <p>Hasil cetak terkompresi otomatis menjadi tepat 1 halaman penuh (A4) tanpa ada teks yang terpotong atau meluap.</p>
+                     </div>
+                 </div>
+
+                 <div class="home-steps">
+                     <h3 class="steps-title">CARA KERJA CEPAT</h3>
+                     <div class="steps-timeline">
+                         <div class="step-item">
+                             <div class="step-num">1</div>
+                             <h5>Tulis Konten</h5>
+                             <p>Ketik teks di Editor atau unggah file markdown (.md) Anda.</p>
+                         </div>
+                         <div class="step-arrow">➜</div>
+                         <div class="step-item">
+                             <div class="step-num">2</div>
+                             <h5>Audit AI & Desain</h5>
+                             <p>Gunakan AI untuk audit kata kunci ATS dan atur slider margin/spasi.</p>
+                         </div>
+                         <div class="step-arrow">➜</div>
+                         <div class="step-item">
+                             <div class="step-num">3</div>
+                             <h5>Unduh PDF</h5>
+                             <p>Klik Unduh PDF untuk mendapatkan resume ramah mesin ATS.</p>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+            
+            <div class="drag-zone" id="drag-zone" style="display: none;">
                 <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drag-icon">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="17 8 12 3 7 8"></polyline>
@@ -111,7 +180,7 @@ Bekasi, Jawa Barat | darrelrangga@gmail.com | +62 8978638973
 darellrangga.me | linkedin.com/in/darell-rangga-1320b634b | github.com/Rangga11268
 
 ## PROFIL PROFESIONAL
-Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 tahun..."></textarea>
+Software Developer yang dinamis dengan pengalaman praktis selama lebih dari 1,5 tahun..." style="display: none;"></textarea>
 
             <!-- Live Preview Area -->
             <div id="live-preview-container" class="live-preview-container" style="display: none;">

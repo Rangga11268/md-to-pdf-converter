@@ -11,13 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectTemplate = document.getElementById('select-template');
     
     // Tabs
+    const tabHome = document.getElementById('tab-home');
     const tabEditor = document.getElementById('tab-editor');
     const tabPreview = document.getElementById('tab-preview');
     const tabAiReviewer = document.getElementById('tab-ai-reviewer');
     const tabPricing = document.getElementById('tab-pricing');
+    const homeContainer = document.getElementById('home-container');
     const livePreviewContainer = document.getElementById('live-preview-container');
     const aiReviewerContainer = document.getElementById('ai-reviewer-container');
     const pricingContainer = document.getElementById('pricing-container');
+    const btnStartEditor = document.getElementById('btn-start-editor');
     const a4Sheet = document.getElementById('a4-sheet');
 
     // Pricing elements
@@ -409,11 +412,27 @@ Darell Rangga Putra Rachman`;
     }
 
     // Tabs switching logic
+    tabHome.addEventListener('click', () => {
+        tabEditor.classList.remove('active');
+        tabPreview.classList.remove('active');
+        tabAiReviewer.classList.remove('active');
+        tabPricing.classList.remove('active');
+        tabHome.classList.add('active');
+        markdownInput.style.display = 'none';
+        dragZone.style.display = 'none';
+        livePreviewContainer.style.display = 'none';
+        aiReviewerContainer.style.display = 'none';
+        pricingContainer.style.display = 'none';
+        homeContainer.style.display = 'flex';
+    });
+
     tabEditor.addEventListener('click', () => {
+        tabHome.classList.remove('active');
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
         tabEditor.classList.add('active');
+        homeContainer.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
@@ -422,10 +441,12 @@ Darell Rangga Putra Rachman`;
     });
 
     tabPreview.addEventListener('click', () => {
+        tabHome.classList.remove('active');
         tabEditor.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
         tabPreview.classList.add('active');
+        homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
@@ -435,10 +456,12 @@ Darell Rangga Putra Rachman`;
     });
 
     tabAiReviewer.addEventListener('click', () => {
+        tabHome.classList.remove('active');
         tabEditor.classList.remove('active');
         tabPreview.classList.remove('active');
         tabPricing.classList.remove('active');
         tabAiReviewer.classList.add('active');
+        homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
@@ -447,15 +470,22 @@ Darell Rangga Putra Rachman`;
     });
 
     tabPricing.addEventListener('click', () => {
+        tabHome.classList.remove('active');
         tabEditor.classList.remove('active');
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.add('active');
+        homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         dragZone.style.display = 'none';
         pricingContainer.style.display = 'flex';
+    });
+
+    // Landing Page CTA button click handler
+    btnStartEditor.addEventListener('click', () => {
+        tabEditor.click(); // Programmatically click EDITOR tab
     });
 
     // Live Render compilation
