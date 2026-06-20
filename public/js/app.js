@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             { id: 'preview-placeholder', url: 'components/preview.html', useOuterHTML: true },
             { id: 'reviewer-placeholder', url: 'components/reviewer.html', useOuterHTML: true },
             { id: 'pricing-placeholder', url: 'components/pricing.html', useOuterHTML: true },
+            { id: 'auth-placeholder', url: 'components/auth.html', useOuterHTML: true },
             { id: 'settings-placeholder', url: 'components/settings.html', useOuterHTML: false },
             { id: 'dialogs-placeholder', url: 'components/dialogs.html', useOuterHTML: false }
         ];
@@ -54,10 +55,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tabPreview = document.getElementById('tab-preview');
     const tabAiReviewer = document.getElementById('tab-ai-reviewer');
     const tabPricing = document.getElementById('tab-pricing');
+    const tabAuth = document.getElementById('tab-auth');
     const homeContainer = document.getElementById('home-container');
     const livePreviewContainer = document.getElementById('live-preview-container');
     const aiReviewerContainer = document.getElementById('ai-reviewer-container');
     const pricingContainer = document.getElementById('pricing-container');
+    const authContainer = document.getElementById('auth-container');
     const btnStartEditor = document.getElementById('btn-start-editor');
     const a4Sheet = document.getElementById('a4-sheet');
     const appContainer = document.querySelector('.app-container');
@@ -72,6 +75,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (actionsContainer) {
         actionsContainer.style.display = 'none';
+    }
+    if (authContainer) {
+        authContainer.style.display = 'none';
+    }
+
+    // Dynamic Auth Form Switcher Logic
+    const btnTabLogin = document.getElementById('btn-tab-login');
+    const btnTabRegister = document.getElementById('btn-tab-register');
+    const formLogin = document.getElementById('form-login');
+    const formRegister = document.getElementById('form-register');
+    const authToggleLink = document.getElementById('auth-toggle-link');
+    const authSwitchText = document.getElementById('auth-switch-text');
+
+    if (btnTabLogin && btnTabRegister && formLogin && formRegister) {
+        const showLogin = () => {
+            btnTabLogin.classList.add('active');
+            btnTabRegister.classList.remove('active');
+            formLogin.style.display = 'flex';
+            formRegister.style.display = 'none';
+            if (authSwitchText) authSwitchText.innerHTML = 'Belum punya akun? <span id="auth-toggle-link" class="auth-link">Daftar sekarang</span>';
+            const newLink = document.getElementById('auth-toggle-link');
+            if (newLink) newLink.addEventListener('click', showRegister);
+        };
+
+        const showRegister = () => {
+            btnTabRegister.classList.add('active');
+            btnTabLogin.classList.remove('active');
+            formRegister.style.display = 'flex';
+            formLogin.style.display = 'none';
+            if (authSwitchText) authSwitchText.innerHTML = 'Sudah punya akun? <span id="auth-toggle-link" class="auth-link">Masuk disini</span>';
+            const newLink = document.getElementById('auth-toggle-link');
+            if (newLink) newLink.addEventListener('click', showLogin);
+        };
+
+        btnTabLogin.addEventListener('click', showLogin);
+        btnTabRegister.addEventListener('click', showRegister);
+        if (authToggleLink) authToggleLink.addEventListener('click', showRegister);
     }
 
     // Pricing elements
@@ -468,12 +508,14 @@ Darell Rangga Putra Rachman`;
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
+        if (tabAuth) tabAuth.classList.remove('active');
         tabHome.classList.add('active');
         markdownInput.style.display = 'none';
         dragZone.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
         homeContainer.style.display = 'flex';
         
         // Hide actions in header for Home
@@ -491,11 +533,13 @@ Darell Rangga Putra Rachman`;
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
+        if (tabAuth) tabAuth.classList.remove('active');
         tabEditor.classList.add('active');
         homeContainer.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
         dragZone.style.display = 'flex';
         markdownInput.style.display = 'block';
         
@@ -514,11 +558,13 @@ Darell Rangga Putra Rachman`;
         tabEditor.classList.remove('active');
         tabAiReviewer.classList.remove('active');
         tabPricing.classList.remove('active');
+        if (tabAuth) tabAuth.classList.remove('active');
         tabPreview.classList.add('active');
         homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
         dragZone.style.display = 'none';
         livePreviewContainer.style.display = 'block';
         renderLivePreview();
@@ -538,12 +584,14 @@ Darell Rangga Putra Rachman`;
         tabEditor.classList.remove('active');
         tabPreview.classList.remove('active');
         tabPricing.classList.remove('active');
+        if (tabAuth) tabAuth.classList.remove('active');
         tabAiReviewer.classList.add('active');
         homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         pricingContainer.style.display = 'none';
         dragZone.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'block';
         
         // Hide actions in header for AI Reviewer
@@ -561,12 +609,14 @@ Darell Rangga Putra Rachman`;
         tabEditor.classList.remove('active');
         tabPreview.classList.remove('active');
         tabAiReviewer.classList.remove('active');
+        if (tabAuth) tabAuth.classList.remove('active');
         tabPricing.classList.add('active');
         homeContainer.style.display = 'none';
         markdownInput.style.display = 'none';
         livePreviewContainer.style.display = 'none';
         aiReviewerContainer.style.display = 'none';
         dragZone.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
         pricingContainer.style.display = 'flex';
         
         // Hide actions in header for Pricing
@@ -578,6 +628,33 @@ Darell Rangga Putra Rachman`;
             appContainer.classList.add('full-width');
         }
     });
+
+    if (tabAuth) {
+        tabAuth.addEventListener('click', () => {
+            tabHome.classList.remove('active');
+            tabEditor.classList.remove('active');
+            tabPreview.classList.remove('active');
+            tabAiReviewer.classList.remove('active');
+            tabPricing.classList.remove('active');
+            tabAuth.classList.add('active');
+            homeContainer.style.display = 'none';
+            markdownInput.style.display = 'none';
+            livePreviewContainer.style.display = 'none';
+            aiReviewerContainer.style.display = 'none';
+            dragZone.style.display = 'none';
+            pricingContainer.style.display = 'none';
+            if (authContainer) authContainer.style.display = 'flex';
+            
+            // Hide actions in header for Auth
+            if (actionsContainer) actionsContainer.style.display = 'none';
+
+            // Hide right panel for Auth
+            if (settingsPanel && appContainer) {
+                settingsPanel.style.display = 'none';
+                appContainer.classList.add('full-width');
+            }
+        });
+    }
 
     // Landing Page CTA button click handler
     btnStartEditor.addEventListener('click', () => {
